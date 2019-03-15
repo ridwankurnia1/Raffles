@@ -7,11 +7,11 @@ namespace Raffles.API.Data
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly DataContext _Context;
+        private DataContext _Context = new DataContext();
 
-        public AuthRepository(DataContext context)
+        public AuthRepository()
         {
-            _Context = context;
+            //_Context = context;
         }        
 
         public async Task<User> Login(string username, string password)

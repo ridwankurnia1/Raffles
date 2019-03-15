@@ -4,7 +4,6 @@ using Raffles.API.Data;
 using Raffles.API.Dto;
 using Raffles.API.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -14,20 +13,23 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Raffles.API.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AuthController : ApiController
     {
         private readonly IAuthRepository _Repo;
         private readonly IMapper _Mapper;
-
+        
         public AuthController(IAuthRepository repo, IMapper mapper)
         {
             _Repo = repo;
             _Mapper = mapper;
         }
-
+        
+        [Route("auth/Register")]
         [HttpPost]
         public async Task<IHttpActionResult> Register(UserRegisterDto userRegister)
         {
@@ -40,9 +42,10 @@ namespace Raffles.API.Controllers
 
             var CreatedUser = await _Repo.Register(UserToCreate, userRegister.Password);
 
-            return CreatedAtRoute("GetUser", new { controller = "Users", id = CreatedUser.Id }, CreatedUser);
+            return CreatedAtRoute("DefaultApi", new { controller = "Users", id = CreatedUser.Id }, CreatedUser);
         }
 
+        [Route("auth/login")]
         [HttpPost]
         public async Task<IHttpActionResult> Login(UserLoginDto userLogin)
         {

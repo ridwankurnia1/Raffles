@@ -24,7 +24,8 @@ namespace Raffles.API.Controllers
             return db.Users;
         }
 
-        // GET: api/Users/5
+        // GET: api/Users/5        
+        //[Route("api/users/{id}", Name = "GetUser")]
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> GetUser(int id)
         {
@@ -87,7 +88,7 @@ namespace Raffles.API.Controllers
             return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Users/5        
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> DeleteUser(int id)
         {
