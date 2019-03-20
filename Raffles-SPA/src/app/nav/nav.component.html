@@ -1,40 +1,46 @@
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  <a class="navbar-brand" href="#">Raffles Hills</a>
-  <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" 
-        [attr.aria-expanded]="!isCollapsed" aria-controls="navbarsDefault"
-        aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">Raffles Hills</a>
+    <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed"
+      [attr.aria-expanded]="!isCollapsed" aria-controls="navbarsDefault" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarsDefault" [collapse]="isCollapsed">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Disabled</a>
-      </li>      
-    </ul>
+    <div class="collapse navbar-collapse" id="navbarsDefault" [collapse]="isCollapsed">
+      <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/home']">Home</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/transaksi']">Transaksi</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/laporan']">Laporan</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/registrasi']">Registrasi</a>
+        </li>
+      </ul>
 
-    <div *ngIf="loggedIn()" class="dropdown">
-      <a class="dropdown-toggle text-light">
-        Welcome User
-      </a>
-    
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#"><i class="fa fa-sign-out"></i>Logout</a>        
+      <div *ngIf="loggedIn()" class="dropdown" dropdown>
+        <a class="dropdown-toggle text-light" dropdownToggle>
+          Welcome {{authService.decodedToken?.unique_name | titlecase}}
+        </a>
+
+        <div class="dropdown-menu" *dropdownMenu>
+          <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#" (click)="logout()"><i class="fa fa-sign-out"></i>Logout</a>
+        </div>
       </div>
-    </div>
 
-    <form *ngIf="!loggedIn()" #loginform="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
-      <input class="form-control mr-sm-2" type="text" name="username" required placeholder="Username" [(ngModel)]="model.username">
-      <input class="form-control mr-sm-2" type="password" name="password" required placeholder="Password" [(ngModel)]="model.password">
-      <button [disabled]="!loginform.valid" class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
-    </form>
+      <form *ngIf="!loggedIn()" #loginform="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
+        <input class="form-control mr-sm-2" type="text" name="username" required placeholder="Username"
+          [(ngModel)]="model.username">
+        <input class="form-control mr-sm-2" type="password" name="password" required placeholder="Password"
+          [(ngModel)]="model.password">
+        <button [disabled]="!loginform.valid" class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
+      </form>
+    </div>
   </div>
 </nav>
