@@ -1,3 +1,117 @@
-<p>
-  transaksi works!
-</p>
+<div class="container">
+
+  <div *ngIf="!inputMode" class="mt-2 mb-2">
+    <p>
+      <button class="btn btn-success my-2" (click)="inputToggle(false)" ><i class="fa fa-plus mr-2"></i>Transaksi</button>
+    </p>    
+
+    <p-table class="table table-responsive table-striped" [value]="transactions" [paginator]="true" [rows]="10"
+      [responsive]="true" sortMode="multiple">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="Id">Id</th>
+          <th pSortableColumn="Category.CategoryName">Kategori</th>
+          <th pSortableColumn="Description">Keterangan</th>
+          <th pSortableColumn="TransactionDate">Tanggal</th>
+          <th pSortableColumn="Amount" class="text-right">Jumlah</th>
+          <th style="width:4em"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-trans>
+        <tr [ngClass]="{'text-danger font-italic': trans.DeleteFlag == 1}">
+          <td>{{trans.Id}}</td>
+          <td>{{trans.Category.CategoryName}}</td>
+          <td>{{trans.Description}}</td>
+          <td>{{trans.TransactionDate | date: 'dd-MM-yyyy'}}</td>
+          <td class="text-right">{{trans.TransactionType === "D" ? (trans.Amount|number) : (trans.Amount*-1|number)}}            
+          </td>
+          <td>
+              <button [disabled]="trans.DeleteFlag == 1"  class="btn btn-outline-danger btn-sm"              
+              pButton (click)="selectTransaction(trans)"><i class="fa fa-times"></i></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div *ngIf="inputMode" class="col-md-6 mt-3">
+    <h4 class="mb-3">Input Transaksi</h4>
+    <form [formGroup]="transaksiForm" (ngSubmit)="submitTransaction()">
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="tanggal">Tanggal</label>
+          <div class="input-group">
+            <input class="form-control" formControlName="transactionDate" [ngClass]="{'is-invalid': transaksiForm.get('transactionDate').errors 
+            && transaksiForm.get('transactionDate').touched}" #dp="bsDatepicker" placeholder="dd-mm-yyyy" type="text"
+              bsDatepicker [bsConfig]="bsConfig">
+            <div class="input-group-append">
+              <button class="btn btn-secondary btn-outline-secondary" (click)="dp.toggle()"
+                [attr.aria-expanded]="dp.isOpen" type="button" id="button-addon2">
+                <i class="fa fa-calendar"></i>
+              </button>
+            </div>
+            <div class="invalid-feedback">
+              Harap isi tanggal</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+      
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="transaksi">Transaksi</label>
+          <select class="custom-select d-block w-100" formControlName="transactionType" [ngClass]="{'is-invalid': transaksiForm.get('transactionType').errors 
+            && transaksiForm.get('transactionType').touched}" (change)="onTransactionSelect($event.target.value)">
+            <option value="">Pilih Transaksi ...</option>
+            <option value="D">Pemasukan</option>
+            <option value="K">Pengeluaran</option>
+          </select>
+          <div class="invalid-feedback">
+            Harap pilih jenis transaksi
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <label for="Category">Kategori</label>
+          <select class="custom-select d-block w-100" formControlName="categoryId" [ngClass]="{'is-invalid': transaksiForm.get('categoryId').errors 
+            && transaksiForm.get('categoryId').touched}">
+            <option value="">Pilih Kategori ...</option>
+            <option *ngFor="let category of categories" [value]="category.CategoryId">{{category.CategoryName}}</option>
+          </select>
+          <div class="invalid-feedback">
+            Harap pilih kategori transaksi
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="keterangan">Keterangan</label>
+        <input type="text" formControlName="description" [ngClass]="{'is-invalid': transaksiForm.get('description').errors 
+        && transaksiForm.get('description').touched}" class="form-control">
+        <div class="invalid-feedback">
+          Harap input keterangan
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="jumlah">Jumlah</label>
+        <input type="number" formControlName="amount" [ngClass]="{'is-invalid': transaksiForm.get('amount').errors 
+        && transaksiForm.get('amount').touched}" class="form-control">
+        <div class="invalid-feedback">
+          Harap input jumlah
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-success my-2 mr-2"
+          [ngClass]="{'btn-success': transaksiForm.valid, 'btn-secondary': !transaksiForm.valid}"
+          [disabled]="!transaksiForm.valid" type="submit"><i class="fa fa-check mr-2"></i>Submit</button>
+        <button class="btn btn-primary my-2" type="cancel" (click)="inputToggle(true)"><i class="fa fa-undo mr-2"></i>Batal</button>
+      </div>
+    </form>
+  </div>
+
+</div>

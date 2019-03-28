@@ -16,45 +16,44 @@ using Raffles.API.Models;
 namespace Raffles.API.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class UsersController : ApiController
+    public class CategoriesController : ApiController
     {
         private DataContext db = new DataContext();
 
-        // GET: api/Users
-        public IQueryable<User> GetUsers()
+        // GET: api/Categories
+        public IQueryable<Categories> GetCategories()
         {
-            return db.Users;
+            return db.Categories.Include(u => u.Created);
         }
 
-        // GET: api/Users/5        
-        //[Route("api/users/{id}", Name = "GetUser")]
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(int id)
+        // GET: api/Categories/5
+        [ResponseType(typeof(Categories))]
+        public async Task<IHttpActionResult> GetCategory(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
+            Categories category = await db.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(category);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Categories/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        public async Task<IHttpActionResult> PutCategory(int id, Categories category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.Id)
+            if (id != category.CategoryId)
             {
                 return BadRequest();
             }
 
-            db.Entry(user).State = EntityState.Modified;
+            db.Entry(category).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +61,7 @@ namespace Raffles.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!CategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -75,35 +74,35 @@ namespace Raffles.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Users
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(User user)
+        // POST: api/Categories
+        [ResponseType(typeof(Categories))]
+        public async Task<IHttpActionResult> PostCategory(Categories category)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Users.Add(user);
+            db.Categories.Add(category);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+            return CreatedAtRoute("DefaultApi", new { id = category.CategoryId }, category);
         }
 
-        // DELETE: api/Users/5        
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> DeleteUser(int id)
+        // DELETE: api/Categories/5
+        [ResponseType(typeof(Categories))]
+        public async Task<IHttpActionResult> DeleteCategory(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
+            Categories category = await db.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            db.Users.Remove(user);
+            db.Categories.Remove(category);
             await db.SaveChangesAsync();
 
-            return Ok(user);
+            return Ok(category);
         }
 
         protected override void Dispose(bool disposing)
@@ -115,9 +114,9 @@ namespace Raffles.API.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UserExists(int id)
+        private bool CategoryExists(int id)
         {
-            return db.Users.Count(e => e.Id == id) > 0;
+            return db.Categories.Count(e => e.CategoryId == id) > 0;
         }
     }
 }

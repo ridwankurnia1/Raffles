@@ -17,6 +17,7 @@ using System.Web.Http.Cors;
 
 namespace Raffles.API.Controllers
 {
+    [AllowAnonymous]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AuthController : ApiController
     {

@@ -16,45 +16,44 @@ using Raffles.API.Models;
 namespace Raffles.API.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class UsersController : ApiController
+    public class TransactionsController : ApiController
     {
         private DataContext db = new DataContext();
 
-        // GET: api/Users
-        public IQueryable<User> GetUsers()
+        // GET: api/Transactions
+        public IQueryable<Transaction> Gettransactions()
         {
-            return db.Users;
+            return db.transactions.Include(c => c.Category);
         }
 
-        // GET: api/Users/5        
-        //[Route("api/users/{id}", Name = "GetUser")]
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(int id)
+        // GET: api/Transactions/5
+        [ResponseType(typeof(Transaction))]
+        public async Task<IHttpActionResult> GetTransaction(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
+            Transaction transaction = await db.transactions.FindAsync(id);
+            if (transaction == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(transaction);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Transactions/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        public async Task<IHttpActionResult> PutTransaction(int id, Transaction transaction)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.Id)
+            if (id != transaction.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(user).State = EntityState.Modified;
+            db.Entry(transaction).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +61,7 @@ namespace Raffles.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!TransactionExists(id))
                 {
                     return NotFound();
                 }
@@ -75,35 +74,35 @@ namespace Raffles.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Users
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(User user)
+        // POST: api/Transactions
+        [ResponseType(typeof(Transaction))]
+        public async Task<IHttpActionResult> PostTransaction(Transaction transaction)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Users.Add(user);
+            db.transactions.Add(transaction);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
+            return CreatedAtRoute("DefaultApi", new { id = transaction.Id }, transaction);
         }
 
-        // DELETE: api/Users/5        
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> DeleteUser(int id)
+        // DELETE: api/Transactions/5
+        [ResponseType(typeof(Transaction))]
+        public async Task<IHttpActionResult> DeleteTransaction(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
+            Transaction transaction = await db.transactions.FindAsync(id);
+            if (transaction == null)
             {
                 return NotFound();
             }
 
-            db.Users.Remove(user);
+            db.transactions.Remove(transaction);
             await db.SaveChangesAsync();
 
-            return Ok(user);
+            return Ok(transaction);
         }
 
         protected override void Dispose(bool disposing)
@@ -115,9 +114,9 @@ namespace Raffles.API.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UserExists(int id)
+        private bool TransactionExists(int id)
         {
-            return db.Users.Count(e => e.Id == id) > 0;
+            return db.transactions.Count(e => e.Id == id) > 0;
         }
     }
 }

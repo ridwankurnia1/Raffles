@@ -8,39 +8,86 @@
 
     <div class="collapse navbar-collapse" id="navbarsDefault" [collapse]="isCollapsed">
       <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" [routerLink]="['/home']">Home</a>
-        </li>
+        </li> -->
         <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" [routerLink]="['/transaksi']">Transaksi</a>
         </li>
         <li class="nav-item" routerLinkActive="active">
           <a class="nav-link" [routerLink]="['/laporan']">Laporan</a>
         </li>
-        <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" [routerLink]="['/registrasi']">Registrasi</a>
+        <li class="nav-item dropdown" dropdown>   
+            <a class="nav-link dropdown-toggle" dropdownToggle>
+                Setting
+            </a>
+            <div class="nav-item dropdown-menu" *dropdownMenu>
+              <a class="nav-item dropdown-item" [routerLink]="['/users']" routerLinkActive="active">User </a>
+              <a class="nav-item dropdown-item" [routerLink]="['/otorisasi']" routerLinkActive="active">Otorisasi</a>
+              <div class="dropdown-divider"></div>
+              <a class="nav-item dropdown-item" [routerLink]="['/kategori']" routerLinkActive="active" >Kategori</a>
+            </div> 
         </li>
       </ul>
 
       <div *ngIf="loggedIn()" class="dropdown" dropdown>
         <a class="dropdown-toggle text-light" dropdownToggle>
-          Welcome {{authService.decodedToken?.unique_name | titlecase}}
+          <i class="fa fa-user mr-2"></i> {{authService.decodedToken?.unique_name | titlecase}}
         </a>
 
         <div class="dropdown-menu" *dropdownMenu>
-          <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
+          <a class="dropdown-item" href="#"><i class="fa fa-edit mr-2"></i>Profile</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#" (click)="logout()"><i class="fa fa-sign-out"></i>Logout</a>
+          <a class="dropdown-item" href="#" (click)="logout()"><i class="fa fa-sign-out mr-2"></i>Logout</a>
         </div>
       </div>
 
-      <form *ngIf="!loggedIn()" #loginform="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
+      <!-- <form *ngIf="!loggedIn()" #loginform="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
         <input class="form-control mr-sm-2" type="text" name="username" required placeholder="Username"
           [(ngModel)]="model.username">
         <input class="form-control mr-sm-2" type="password" name="password" required placeholder="Password"
           [(ngModel)]="model.password">
         <button [disabled]="!loginform.valid" class="btn btn-success my-2 my-sm-0" type="submit">Login</button>
-      </form>
+      </form> -->
+    </div>
+    <div *ngIf="!loggedIn()" class="navbar-right">
+      <button type="button" class="btn btn-success my-2 my-sm-0" (click)="openModal(template)">Login</button>
     </div>
   </div>
 </nav>
+
+<ng-template #template>
+  <form class="form-signin" #loginform="ngForm" (ngSubmit)="login()">
+    <div class="text-center mt-4">
+      <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+    </div>
+
+    <div class="container">
+      <div class="text-center col-md-12 mt-6">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
+          </div>
+          <input class="form-control mr-sm-2" type="text" name="username" required placeholder="Username"
+            [(ngModel)]="model.username">
+        </div>
+
+        <div class="input-group mb-4">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"><i class="fa fa-lock"></i></span>
+          </div>
+          <input class="form-control mr-sm-2" type="password" name="password" required placeholder="Password"
+            [(ngModel)]="model.password">
+        </div>
+
+        <!-- <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div> -->
+        <button [disabled]="!loginform.valid" class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+      </div>
+      <p class="mt-3 mb-5 text-muted text-center"></p>
+    </div>
+  </form>
+</ng-template>

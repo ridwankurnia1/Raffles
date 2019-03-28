@@ -1,10 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CollapseModule } from 'ngx-bootstrap';
+import { CollapseModule, TabsModule, BsDatepickerModule, ModalModule } from 'ngx-bootstrap';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
+import { TableModule } from 'primeng/table';
+import { PaginatorModule } from 'primeng/paginator';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -16,7 +18,9 @@ import { RegistrasiComponent } from './registrasi/registrasi.component';
 import { HomeComponent } from './home/home.component';
 import { appRoutes } from './routes';
 import { AuthGuard } from './_guards/auth.guard';
-
+import { TransService } from './_services/trans.service';
+import { OtorisasiComponent } from './otorisasi/otorisasi.component';
+import { KategoriComponent } from './kategori/kategori.component';
 
 @NgModule({
    declarations: [
@@ -25,20 +29,29 @@ import { AuthGuard } from './_guards/auth.guard';
       TransaksiComponent,
       LaporanComponent,
       RegistrasiComponent,
-      HomeComponent
+      HomeComponent,
+      OtorisasiComponent,
+      KategoriComponent
    ],
    imports: [
       BrowserModule,
       HttpClientModule,
       FormsModule,
+      ReactiveFormsModule,
+      TableModule,
       CollapseModule.forRoot(),
       BsDropdownModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
+      BsDatepickerModule.forRoot(),
+      ModalModule.forRoot(),
+      TabsModule.forRoot(),
+      RouterModule.forRoot(appRoutes),
+      PaginatorModule
    ],
    providers: [
       AlertifyService,
       AuthService,
-      AuthGuard
+      AuthGuard,
+      TransService
    ],
    bootstrap: [
       AppComponent

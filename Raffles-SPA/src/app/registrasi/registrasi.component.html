@@ -1,3 +1,148 @@
-<p>
-  registrasi works!
-</p>
+<div class="container">
+  <div *ngIf="!inputMode" class="mt-2 mb-2">
+    <p>
+      <button class="btn btn-success my-2" (click)="inputToggle(false)"><i class="fa fa-plus mr-2"></i>User</button>
+    </p>
+
+    <p-table #dt class="table table-responsive table-striped" [value]="listUser" [paginator]="true" [rows]="10"
+      [responsive]="true" sortMode="multiple">
+      <ng-template pTemplate="caption">
+        <div style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter"
+            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:4em"></th>
+          <th style="width:4em" pSortableColumn="Id">Id</th>
+          <th pSortableColumn="Username">User Name</th>
+          <th style="width:16em" pSortableColumn="Email">Email</th>
+          <th pSortableColumn="Phone">No Telepon</th>
+          <th pSortableColumn="BlockNo">Block</th>
+          <th pSortableColumn="HouseNo">No Rumah</th>
+          <th pSortableColumn="LastLogin">Login Terakhir</th>
+          <th pSortableColumn="Active">Status</th>
+          <th style="width:4em"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr [ngClass]="{'text-danger font-italic': user.Active == 1}">
+          <td>
+            <button class="btn btn-outline-warning btn-sm" pButton (click)="editUser(user)"><i
+                class="fa fa-pencil"></i></button>
+          </td>
+          <td>{{user.Id}}</td>
+          <td>{{user.Username}}</td>
+          <td>{{user.Email}}</td>
+          <td>{{user.Phone}}</td>
+          <td>{{user.BlockNo}}</td>
+          <td>{{user.HouseNo}}</td>
+          <td>{{user.LastLogin | date: 'dd-MM-yyyy'}}</td>
+          <td>{{user.Active}}</td>
+          <td>
+            <button [disabled]="user.Active == 0" class="btn btn-outline-danger btn-sm" pButton
+              (click)="selectUser(user)"><i class="fa fa-times"></i></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div *ngIf="inputMode" class="col-md-6 mt-3">
+    <h4 class="mb-3">Registrasi User</h4>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="mb-3">
+        <label for="username">User ID</label>
+        <input type="text" [ngClass]="{'is-invalid': registerForm.get('username').errors
+                && registerForm.get('username').touched}" class="form-control" formControlName="username">
+        <div class="invalid-feedback">
+          Harap isi User ID
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="email">Email</label>
+        <input type="text" [ngClass]="{'is-invalid': registerForm.get('email').errors
+                && registerForm.get('email').touched}" class="form-control" formControlName="email"
+          placeholder="nama@mail.com">
+        <div class="invalid-feedback" *ngIf="registerForm.get('email').hasError('required') 
+                && registerForm.get('email').touched ">
+          Harap isi alamat email
+        </div>
+        <div class="invalid-feedback" *ngIf="registerForm.get('email').hasError('email') 
+                && registerForm.get('email').touched">
+          Alamat email tidak valid
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="phone">No Telepon</label>
+        <input type="text" [ngClass]="{'is-invalid': registerForm.get('phone').errors
+                && registerForm.get('phone').touched}" class="form-control" formControlName="phone">
+        <div class="invalid-feedback">
+          Harap isi no telepon
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="houseno">No Rumah</label>
+          <input type="text" [ngClass]="{'is-invalid': registerForm.get('houseNo').errors
+                && registerForm.get('houseNo').touched}" class="form-control" formControlName="houseNo">
+          <div class="invalid-feedback">
+            Harap isi nomor rumah
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="block">Blok</label>
+          <input type="text" [ngClass]="{'is-invalid': registerForm.get('block').errors
+                && registerForm.get('block').touched}" class="form-control" formControlName="block">
+          <div class="invalid-feedback">
+            Harap isi blok rumah
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password">Password</label>
+        <input type="password" [ngClass]="{'is-invalid': registerForm.get('password').errors
+                && registerForm.get('password').touched}" class="form-control" formControlName="password">
+        <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('required') 
+                && registerForm.get('username').touched ">
+          Harap isi password
+        </div>
+        <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('minlength') 
+                && registerForm.get('password').touched">
+          Password minimal 4 karakter
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="confirmPassword">Konfirmasi Password</label>
+        <input type="password" [ngClass]="{'is-invalid': registerForm.get('confirmPassword').errors 
+                && registerForm.get('confirmPassword').touched
+                || registerForm.get('confirmPassword').touched
+                && registerForm.hasError('mismatch')}" class="form-control" formControlName="confirmPassword">
+        <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword').hasError('required') 
+                && registerForm.get('confirmPassword').touched">
+          Harap konfirmasi password
+        </div>
+        <div class="invalid-feedback" *ngIf="registerForm.hasError('mismatch') 
+                && registerForm.get('confirmPassword').touched">
+          Konfirmasi password tidak sesuai
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button class="btn my-2 mr-2"
+          [ngClass]="{'btn-success': registerForm.valid, 'btn-secondary': !registerForm.valid}"
+          [disabled]="!registerForm.valid" type="submit"><i class="fa fa-check mr-2"></i>Submit</button>
+        <button class="btn btn-primary my-2" type="cancel" (click)="inputToggle(true)" ><i class="fa fa-undo mr-2"></i>Batal</button>
+      </div>
+
+    </form>
+  </div>
+</div>
