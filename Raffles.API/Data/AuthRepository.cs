@@ -63,13 +63,5 @@ namespace Raffles.API.Data
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
-
-        public async Task<bool> UserExists(string username)
-        {
-            if (_Context.Users.Any(x => x.Username == username))
-                return true;
-
-            return false;
-        }
     }
 }

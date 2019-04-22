@@ -11,8 +11,8 @@ namespace Raffles.API.Models
         [Key]
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public string TransactionType { get; set; }        
-        public int DeleteFlag { get; set; }
+        public string TransactionType { get; set; }
+        public Int16 Active { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public int CreatedId { get; set; }

@@ -6,6 +6,7 @@ import { RegistrasiComponent } from './registrasi/registrasi.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { KategoriComponent } from './kategori/kategori.component';
 import { OtorisasiComponent } from './otorisasi/otorisasi.component';
+import { KegiatanComponent } from './kegiatan/kegiatan.component';
 
 export const appRoutes: Routes = [
     { path: '', component: HomeComponent },
@@ -19,6 +20,7 @@ export const appRoutes: Routes = [
             { path: 'users', component: RegistrasiComponent },
             { path: 'otorisasi', component: OtorisasiComponent },
             { path: 'kategori', component: KategoriComponent },
+            { path: 'kegiatan', component: KegiatanComponent },
         ]
     },
     { path: '**', redirectTo: '', pathMatch: 'full' }

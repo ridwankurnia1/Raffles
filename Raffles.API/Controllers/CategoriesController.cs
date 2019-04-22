@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
+using AutoMapper;
 using Raffles.API.Data;
 using Raffles.API.Models;
 
@@ -19,18 +20,30 @@ namespace Raffles.API.Controllers
     public class CategoriesController : ApiController
     {
         private DataContext db = new DataContext();
+        private readonly ICategoriesRepository _Repo;
+        private readonly IMapper _Mapper;
+
+        public CategoriesController(ICategoriesRepository repo, IMapper mapper)
+        {
+            _Repo = repo;
+            _Mapper = mapper;
+        }
 
         // GET: api/Categories
-        public IQueryable<Categories> GetCategories()
-        {
-            return db.Categories.Include(u => u.Created);
+        [Route("api/Categories")]
+        [HttpGet]
+        public async Task<IEnumerable<Categories>> GetCategories()
+        {            
+            return await _Repo.GetCategories();
         }
 
         // GET: api/Categories/5
+        [Route("api/Categories/{id}")]
+        [HttpGet]
         [ResponseType(typeof(Categories))]
         public async Task<IHttpActionResult> GetCategory(int id)
         {
-            Categories category = await db.Categories.FindAsync(id);
+            Categories category = await _Repo.GetCategories(id);
             if (category == null)
             {
                 return NotFound();
@@ -40,69 +53,55 @@ namespace Raffles.API.Controllers
         }
 
         // PUT: api/Categories/5
+        [Route("api/Categories/{id}")]
+        [HttpPut]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutCategory(int id, Categories category)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var categoryFromRepo = await _Repo.GetCategories(id);
 
-            if (id != category.CategoryId)
+            if (categoryFromRepo != null)
             {
-                return BadRequest();
-            }
-
-            db.Entry(category).State = EntityState.Modified;
-
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CategoryExists(id))
+                if (categoryFromRepo.Active == category.Active)
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    if (await _Repo.CategoryExists(category.CategoryName, category.TransactionType))
+                        return BadRequest("Kategori sudah pernah dibuat");
+                }                    
             }
+            else
+            {
+                return BadRequest("Data tidak ditemukan");
+            }
+
+            await _Repo.UpdateCategory(category);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/Categories
-        [ResponseType(typeof(Categories))]
+        [Route("api/Categories")]
+        [HttpPost]
         public async Task<IHttpActionResult> PostCategory(Categories category)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (await _Repo.CategoryExists(category.CategoryName,category.TransactionType))
+                return BadRequest("Kategori sudah pernah dibuat");
 
-            db.Categories.Add(category);
-            await db.SaveChangesAsync();
+            category.CreatedDate = DateTime.Now;
+            category.UpdatedDate = DateTime.Now;
+            await _Repo.Add(category);
 
-            return CreatedAtRoute("DefaultApi", new { id = category.CategoryId }, category);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // DELETE: api/Categories/5
-        [ResponseType(typeof(Categories))]
-        public async Task<IHttpActionResult> DeleteCategory(int id)
+        // DELETE: api/Categories
+        [Route("api/Categories")]
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> DeleteCategory(Categories categories)
         {
-            Categories category = await db.Categories.FindAsync(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
+            await _Repo.DeleteCategory(categories);
 
-            db.Categories.Remove(category);
-            await db.SaveChangesAsync();
-
-            return Ok(category);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         protected override void Dispose(bool disposing)
@@ -112,11 +111,6 @@ namespace Raffles.API.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return db.Categories.Count(e => e.CategoryId == id) > 0;
         }
     }
 }

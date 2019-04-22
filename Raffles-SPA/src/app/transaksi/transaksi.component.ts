@@ -18,7 +18,8 @@ export class TransaksiComponent implements OnInit {
   bsValue: any;
   transactions: Transactions[];
   values: Transactions;
-  categories, tempCategories: Categories[];
+  categories: Categories[];
+  tempCategories: Categories[];
   inputMode = false;
 
   constructor(private alertify: AlertifyService, private fb: FormBuilder

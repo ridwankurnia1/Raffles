@@ -18,17 +18,21 @@ namespace Raffles.API
     {
         public static void Register(HttpConfiguration config)
         {
-            var container = new UnityContainer();
-            container.RegisterType<IAuthRepository, AuthRepository>();            
+            var container = new UnityContainer();            
+            container.RegisterType<IAuthRepository, AuthRepository>();
+            container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterType<ICategoriesRepository, CategoriesRepository>();
+
             var MapConfig = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<UserRegisterDto, User>();                   
+                cfg.CreateMap<UserProfileDto, User>();   
             });
 
             IMapper mapper = MapConfig.CreateMapper();
             container.RegisterInstance(mapper);
 
             config.DependencyResolver = new UnityResolver(container);
+            
 
             // Web API configuration and services
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));

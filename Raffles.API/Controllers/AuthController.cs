@@ -30,21 +30,21 @@ namespace Raffles.API.Controllers
             _Mapper = mapper;
         }
         
-        [Route("auth/Register")]
-        [HttpPost]
-        public async Task<IHttpActionResult> Register(UserRegisterDto userRegister)
-        {
-            userRegister.Username = userRegister.Username.ToLower();
+        //[Route("auth/Register")]
+        //[HttpPost]
+        //public async Task<IHttpActionResult> Register(UserRegisterDto userRegister)
+        //{
+        //    userRegister.Username = userRegister.Username.ToLower();
 
-            if (await _Repo.UserExists(userRegister.Username))
-                return BadRequest("User Id sudah digunakan");
+        //    if (await _Repo.UserExists(userRegister.Username))
+        //        return BadRequest("User Id sudah digunakan");
 
-            var UserToCreate = _Mapper.Map<User>(userRegister);
+        //    var UserToCreate = _Mapper.Map<User>(userRegister);
 
-            var CreatedUser = await _Repo.Register(UserToCreate, userRegister.Password);
+        //    var CreatedUser = await _Repo.Register(UserToCreate, userRegister.Password);
 
-            return CreatedAtRoute("DefaultApi", new { controller = "Users", id = CreatedUser.Id }, CreatedUser);
-        }
+        //    return CreatedAtRoute("DefaultApi", new { controller = "Users", id = CreatedUser.Id }, CreatedUser);
+        //}
 
         [Route("auth/login")]
         [HttpPost]
@@ -53,7 +53,7 @@ namespace Raffles.API.Controllers
             var userFromRepo = await _Repo.Login(userLogin.Username.ToLower(), userLogin.Password);
 
             if (userFromRepo == null)
-                return Unauthorized();
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Login gagal"));
 
             var claims = new[]
             {

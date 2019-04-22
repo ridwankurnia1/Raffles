@@ -132,10 +132,17 @@
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Data\AuthRepository.cs" />
+    <Compile Include="Data\CategoriesRepository.cs" />
     <Compile Include="Data\DataContext.cs" />
     <Compile Include="Data\IAuthRepository.cs" />
+    <Compile Include="Data\ICategoriesRepository.cs" />
+    <Compile Include="Data\IUserRepository.cs" />
+    <Compile Include="Data\UserRepository.cs" />
     <Compile Include="Dto\UserLoginDto.cs" />
-    <Compile Include="Dto\UserRegisterDto.cs" />
+    <Compile Include="Dto\UserProfileDto.cs" />
+    <Compile Include="Filter\GlobalExceptionFilter.cs" />
+    <Compile Include="Filter\GlobalExceptionHandler.cs" />
+    <Compile Include="Filter\ValidationActionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -147,6 +154,10 @@
     <Compile Include="Migrations\201903241331437_AddTransaction.cs" />
     <Compile Include="Migrations\201903241331437_AddTransaction.Designer.cs">
       <DependentUpon>201903241331437_AddTransaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904211205526_ChangeDelete.cs" />
+    <Compile Include="Migrations\201904211205526_ChangeDelete.Designer.cs">
+      <DependentUpon>201904211205526_ChangeDelete.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Categories.cs" />
@@ -172,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201903241331437_AddTransaction.resx">
       <DependentUpon>201903241331437_AddTransaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904211205526_ChangeDelete.resx">
+      <DependentUpon>201904211205526_ChangeDelete.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

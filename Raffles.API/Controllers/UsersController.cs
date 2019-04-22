@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.Description;
+using AutoMapper;
 using Raffles.API.Data;
+using Raffles.API.Dto;
 using Raffles.API.Models;
 
 namespace Raffles.API.Controllers
@@ -19,15 +21,25 @@ namespace Raffles.API.Controllers
     public class UsersController : ApiController
     {
         private DataContext db = new DataContext();
+        private readonly IUserRepository _Repo;
+        private readonly IMapper _Mapper;
+
+        public UsersController(IUserRepository repo, IMapper mapper)
+        {
+            _Repo = repo;
+            _Mapper = mapper;
+        }
 
         // GET: api/Users
+        [Route("api/Users")]
+        [HttpGet]
         public IQueryable<User> GetUsers()
         {
             return db.Users;
         }
 
         // GET: api/Users/5        
-        //[Route("api/users/{id}", Name = "GetUser")]
+        [Route("api/users/{id}", Name = "GetUser")]
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> GetUser(int id)
         {
@@ -40,58 +52,39 @@ namespace Raffles.API.Controllers
             return Ok(user);
         }
 
-        // PUT: api/Users/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        [Route("api/Users")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Register(UserProfileDto userRegister)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            userRegister.Username = userRegister.Username.ToLower();
 
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
+            if (await _Repo.UserExists(userRegister.Username))
+                return BadRequest("User Id sudah digunakan");
 
-            db.Entry(user).State = EntityState.Modified;
+            var UserToCreate = _Mapper.Map<User>(userRegister);
+            UserToCreate.Active = 1;
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var CreatedUser = await _Repo.Register(UserToCreate, userRegister.Password);
+
+            return CreatedAtRoute("DefaultApi", new { controller = "Users", id = CreatedUser.Id }, CreatedUser);
+        }
+
+        // PUT: api/Users/5        
+        [ResponseType(typeof(void))]
+        [Route("api/users/{id}")]
+        [HttpPut]
+        public async Task<IHttpActionResult> PutUser(int id, UserProfileDto userProfile)
+        {            
+            var UserToUpdate = _Mapper.Map<User>(userProfile);
+            UserToUpdate.Id = id;
+            await _Repo.UpdateProfile(UserToUpdate, userProfile.Password);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Users
         [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Users.Add(user);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
-        }
-
-        // DELETE: api/Users/5        
-        [ResponseType(typeof(User))]
+        [Route("api/users/{id}")]
+        [HttpDelete]
         public async Task<IHttpActionResult> DeleteUser(int id)
         {
             User user = await db.Users.FindAsync(id);
@@ -100,8 +93,7 @@ namespace Raffles.API.Controllers
                 return NotFound();
             }
 
-            db.Users.Remove(user);
-            await db.SaveChangesAsync();
+            await _Repo.DeleteProfile(id);
 
             return Ok(user);
         }

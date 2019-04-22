@@ -21,6 +21,8 @@ import { AuthGuard } from './_guards/auth.guard';
 import { TransService } from './_services/trans.service';
 import { OtorisasiComponent } from './otorisasi/otorisasi.component';
 import { KategoriComponent } from './kategori/kategori.component';
+import { KegiatanComponent } from './kegiatan/kegiatan.component';
+import { ErrorInterceptorProvider } from './_services/error.interceptor';
 
 @NgModule({
    declarations: [
@@ -31,7 +33,8 @@ import { KategoriComponent } from './kategori/kategori.component';
       RegistrasiComponent,
       HomeComponent,
       OtorisasiComponent,
-      KategoriComponent
+      KategoriComponent,
+      KegiatanComponent
    ],
    imports: [
       BrowserModule,
@@ -48,6 +51,7 @@ import { KategoriComponent } from './kategori/kategori.component';
       PaginatorModule
    ],
    providers: [
+      ErrorInterceptorProvider,
       AlertifyService,
       AuthService,
       AuthGuard,

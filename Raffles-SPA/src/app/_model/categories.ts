@@ -4,7 +4,7 @@ export interface Categories {
     CategoryId: number;
     CategoryName: string;
     TransactionType: string;
-    DeleteFlag: number;
+    Active: number;
     CreatedDate: Date;
     UpdatedDate: Date;
     CreatedId: number;

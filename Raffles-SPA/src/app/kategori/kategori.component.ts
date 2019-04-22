@@ -12,12 +12,20 @@ import { AuthService } from '../_services/auth.service';
 })
 
 export class KategoriComponent implements OnInit {
+  category: Categories;
   kategoriForm: FormGroup;
   listkategori: Categories[];
-  inputMode: false;
+  inputMode = false;
+  editMode = false;
+  ActiveFlag = false;
+  isSubmit = 0;
 
-  constructor(private alertify: AlertifyService, private fb: FormBuilder
-    , private transService: TransService, private authService: AuthService) { }
+  constructor(
+    private alertify: AlertifyService,
+    private fb: FormBuilder,
+    private transService: TransService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.loadCategories();
@@ -26,6 +34,8 @@ export class KategoriComponent implements OnInit {
 
   inputToggle(load: boolean) {
     this.inputMode = !this.inputMode;
+    this.editMode = false;
+    this.isSubmit = 0;
     this.kategoriForm.reset();
     if (load) {
       this.loadCategories();
@@ -34,36 +44,103 @@ export class KategoriComponent implements OnInit {
 
   createKategoriForm() {
     this.kategoriForm = this.fb.group({
+      CategoryId: [''],
       TransactionType: ['', Validators.required],
       CategoryName: ['', Validators.required],
+      Active: ['']
     });
   }
 
   loadCategories() {
-    this.transService.getCategories().subscribe((categories: Categories[]) => {
-      this.listkategori = categories;
-    }, error => {
-      this.alertify.error(error);
-    });
+    this.transService.getCategories().subscribe(
+      (categories: Categories[]) => {
+        this.listkategori = categories;
+      },
+      error => {
+        this.alertify.error(error);
+      }
+    );
   }
 
   editKategori(data: Categories) {
     this.inputToggle(false);
+    this.ActiveFlag = Boolean(data.Active);
+    if(this.ActiveFlag) {
+      this.kategoriForm.controls['TransactionType'].enable();
+      this.kategoriForm.controls['CategoryName'].enable();
+    }
+    else{
+      this.kategoriForm.controls['TransactionType'].disable();
+      this.kategoriForm.controls['CategoryName'].disable();
+    }
+
+    this.editMode = true;
     this.kategoriForm.setValue({
+      CategoryId: data.CategoryId,
       TransactionType: data.TransactionType,
-      CategoryName: data.CategoryName
-    })
+      CategoryName: data.CategoryName,
+      Active: data.Active
+    });
   }
 
   submitKategori() {
+    if (this.kategoriForm.valid) {
+      this.isSubmit = 1;
+      this.category = Object.assign({}, this.kategoriForm.getRawValue());
+      this.category.Active = Number(this.category.Active);
+      this.category.CreatedId = this.authService.decodedToken.nameid;
+      this.category.UpdatedId = this.authService.decodedToken.nameid;      
 
+      if (!this.editMode) {
+        this.category.CategoryId = 0;
+        this.transService.saveCategories(this.category).subscribe(
+          () => {
+            this.alertify.success('Registrasi kategori berhasil');
+          },
+          error => {
+            this.alertify.error(error);
+          },
+          () => {
+            this.inputToggle(true);
+          }
+        );
+      } else {
+        this.transService
+          .edtCategories(this.category.CategoryId, this.category)
+          .subscribe(
+            () => {
+              this.alertify.success('Edit kategori berhasil');
+            },
+            error => {
+              this.alertify.error(error);
+            },
+            () => {
+              this.inputToggle(true);
+            }
+          );
+      }
+    }
   }
 
-  selectKategori(data: Categories) {
-    this.alertify.confirm('Konfirmasi', 'Delete Kategori ' + data.CategoryName + ' ?', () => {
-      console.log(data);
-    }, () => {
-
-    });
+  deleteKategori(data: Categories) {
+    this.alertify.confirm(
+      'Konfirmasi',
+      'Delete kategori ' + data.CategoryName + '?',
+      () => {
+        data.UpdatedId = this.authService.decodedToken.nameid;
+        this.transService.delCategories(data).subscribe(
+          () => {
+            this.alertify.success('Delete kategori berhasil');
+          },
+          error => {
+            this.alertify.error(error);
+          },
+          () => {
+            this.loadCategories();
+          }
+        );
+      },
+      () => {}
+    );
   }
 }

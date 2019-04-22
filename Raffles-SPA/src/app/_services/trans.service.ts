@@ -25,7 +25,19 @@ export class TransService {
     return this.http.get<Transactions>(this.baseUrl + 'api/transactions' + id);
   }
 
+  saveCategories(category: Categories) {
+    return this.http.post(this.baseUrl + 'api/categories', category);
+  }
+
   getCategories(): Observable<Categories[]> {
     return this.http.get<Categories[]>(this.baseUrl + 'api/categories');
+  }
+
+  edtCategories(id: number, category: Categories) {
+    return this.http.put(this.baseUrl + 'api/categories/' + id, category);
+  }
+
+  delCategories(category: Categories) {
+    return this.http.put(this.baseUrl + 'api/categories', category);
   }
 }
