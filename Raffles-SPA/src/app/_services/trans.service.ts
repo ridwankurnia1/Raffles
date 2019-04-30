@@ -21,8 +21,8 @@ export class TransService {
     return this.http.get<Transactions[]>(this.baseUrl + 'api/transactions');
   }
 
-  getTransaction(id): Observable<Transactions> {
-    return this.http.get<Transactions>(this.baseUrl + 'api/transactions' + id);
+  delTransactions(id) {
+    return this.http.delete(this.baseUrl + 'api/transactions' + id);
   }
 
   saveCategories(category: Categories) {

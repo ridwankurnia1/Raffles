@@ -22,10 +22,14 @@ namespace Raffles.API
             container.RegisterType<IAuthRepository, AuthRepository>();
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<ICategoriesRepository, CategoriesRepository>();
+            container.RegisterType<IActivitiesRepository, ActivitiesRepository>();
 
             var MapConfig = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<UserProfileDto, User>();   
+                cfg.CreateMap<UserProfileDto, User>();
+                cfg.CreateMap<Activity, ActivityDto>()
+                    .ForMember(dest => dest.CreatedUser, opts => opts.MapFrom(src => src.Created.Username))
+                    .ForMember(dest => dest.UpdatedUser, opts => opts.MapFrom(src => src.Updated.Username));
             });
 
             IMapper mapper = MapConfig.CreateMapper();

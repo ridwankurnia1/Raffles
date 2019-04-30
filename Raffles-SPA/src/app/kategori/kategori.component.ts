@@ -37,6 +37,10 @@ export class KategoriComponent implements OnInit {
     this.editMode = false;
     this.isSubmit = 0;
     this.kategoriForm.reset();
+    this.kategoriForm.setValue({
+      Active: 1
+    });
+
     if (load) {
       this.loadCategories();
     }
@@ -65,11 +69,10 @@ export class KategoriComponent implements OnInit {
   editKategori(data: Categories) {
     this.inputToggle(false);
     this.ActiveFlag = Boolean(data.Active);
-    if(this.ActiveFlag) {
+    if (this.ActiveFlag) {
       this.kategoriForm.controls['TransactionType'].enable();
       this.kategoriForm.controls['CategoryName'].enable();
-    }
-    else{
+    } else {
       this.kategoriForm.controls['TransactionType'].disable();
       this.kategoriForm.controls['CategoryName'].disable();
     }
@@ -89,7 +92,7 @@ export class KategoriComponent implements OnInit {
       this.category = Object.assign({}, this.kategoriForm.getRawValue());
       this.category.Active = Number(this.category.Active);
       this.category.CreatedId = this.authService.decodedToken.nameid;
-      this.category.UpdatedId = this.authService.decodedToken.nameid;      
+      this.category.UpdatedId = this.authService.decodedToken.nameid;
 
       if (!this.editMode) {
         this.category.CategoryId = 0;

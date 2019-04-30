@@ -62,7 +62,7 @@ export class TransaksiComponent implements OnInit {
   onTransactionSelect(transType) {
     this.categories = this.tempCategories;
     if (transType) {
-      this.categories = this.categories.filter((item) => item.TransactionType === transType);
+      this.categories = this.categories.filter((item) => item.TransactionType === transType && item.Active === 1);
     }
   }
 
@@ -76,12 +76,25 @@ export class TransaksiComponent implements OnInit {
     });
   }
 
-  selectTransaction(data: Transactions) {
-    this.alertify.confirm('Konfirmasi', 'Koreksi transaksi ?', () => {
-      console.log(data);
-    }, () => {
-
-    });
+  deleteTransaction(data: Transactions) {
+    this.alertify.confirm(
+      'Konfirmasi',
+      'Koreksi transaksi ' + data.Description + ' ?',
+      () => {
+        this.transService.delTransactions(data.Id).subscribe(
+          () => {
+            this.alertify.success('Koreksi transaksi berhasil');
+          },
+          error => {
+            this.alertify.error(error);
+          },
+          () => {
+            this.loadTrans();
+          }
+        );
+      },
+      () => {}
+    );
   }
 
   submitTransaction() {

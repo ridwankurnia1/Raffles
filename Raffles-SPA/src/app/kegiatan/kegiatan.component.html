@@ -1,3 +1,117 @@
-<p>
-  kegiatan works!
-</p>
+<div class="container">
+  <div *ngIf="!inputMode" class="mt-2 mb-2">
+    <p>
+      <button class="btn btn-success my-2" (click)="inputToggle(false)" ><i class="fa fa-plus mr-2"></i>Kegiatan</button>
+    </p>    
+
+    <p-table #dt class="table table-responsive table-striped" [value]="listActivity" [paginator]="true" [rows]="10"
+      [responsive]="true" sortMode="multiple" [globalFilterFields]="['ActivityId','ActivityName','ActivityStart','ActivityEnd','Updated.Username']" >
+      <ng-template pTemplate="caption">
+          <div style="text-align: right">        
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+          </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:4em"></th>
+          <th style="width:4em" pSortableColumn="ActivityId">Id</th>
+          <th pSortableColumn="ActivityName">Nama Kegiatan</th>
+          <th pSortableColumn="ActivityStart">Mulai</th>
+          <th pSortableColumn="ActivityEnd">Akhir</th>
+          <th pSortableColumn="Updated.Username">User ID</th>
+          <th pSortableColumn="UpdatedDate">Tanggal Update</th>
+          <th style="width:4em"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-activity>
+        <tr [ngClass]="{'text-danger font-italic': activity.Active == 0}">
+           <td>
+              <button class="btn btn-outline-warning btn-sm"              
+              pButton (click)="editActivities(activity)"><i class="fa fa-pencil"></i></button>
+          </td>
+          <td>{{activity.ActivityId}}</td>
+          <td>{{activity.ActivityName}}</td>
+          <td>{{activity.ActivityStart | date: 'dd-MM-yyyy'}}</td>
+          <td>{{activity.ActivityEnd | date: 'dd-MM-yyyy'}}</td>
+          <td>{{activity.Updated.Username}}</td>
+          <td>{{activity.UpdatedDate | date: 'dd-MM-yyyy'}}</td>
+          <td>
+              <button [disabled]="activity.Active == 0"  class="btn btn-outline-danger btn-sm"              
+              pButton (click)="deleteActivity(activity)"><i class="fa fa-times"></i></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div *ngIf="inputMode" class="col-md-6 mt-3">
+    <h4 class="mb-3">Input Kegiatan</h4>
+    <form [formGroup]="activityForm" (ngSubmit)="submitActivities()">
+      <div class="mb-3" style="display: none;">
+        <label for="ActivityId">ID</label>
+        <input type="text" class="form-control" formControlName="ActivityId">
+      </div>      
+  
+      <div class="mb-3">
+        <label for="ActivityName">Kegiatan</label>
+        <input type="text" formControlName="ActivityName" [ngClass]="{'is-invalid': activityForm.get('ActivityName').errors 
+        && activityForm.get('ActivityName').touched}" class="form-control">
+        <div class="invalid-feedback">
+          Harap input nama kegiatan
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="ActivityStart">Mulai Kegiatan</label>
+          <div class="input-group">
+            <input class="form-control" formControlName="ActivityStart" [ngClass]="{'is-invalid': activityForm.get('ActivityStart').errors 
+            && activityForm.get('ActivityStart').touched}" #dp="bsDatepicker" placeholder="dd-mm-yyyy" type="text"
+              bsDatepicker [bsConfig]="bsConfig">
+            <div class="input-group-append">
+              <button class="btn btn-secondary btn-outline-secondary" (click)="dp.toggle()"
+                [attr.aria-expanded]="dp.isOpen" type="button" id="button-addon2">
+                <i class="fa fa-calendar"></i>
+              </button>
+            </div>
+            <div class="invalid-feedback">
+              Harap isi tanggal mulai kegiatan</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="ActivityEnd">Akhir Kegiatan</label>
+          <div class="input-group">
+            <input class="form-control" formControlName="ActivityEnd" [ngClass]="{'is-invalid': activityForm.get('ActivityEnd').errors 
+            && activityForm.get('ActivityEnd').touched}" #dp2="bsDatepicker" placeholder="dd-mm-yyyy" type="text"
+              bsDatepicker [bsConfig]="bsConfig">
+            <div class="input-group-append">
+              <button class="btn btn-secondary btn-outline-secondary" (click)="dp2.toggle()"
+                [attr.aria-expanded]="dp2.isOpen" type="button" id="button-addon2">
+                <i class="fa fa-calendar"></i>
+              </button>
+            </div>
+            <div class="invalid-feedback">
+              Harap isi tanggal mulai kegiatan</div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="editMode && !ActiveFlag" class="mb-3 custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="chkActive" formControlName="Active">
+        <label class="custom-control-label" for="chkActive">Active</label>
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-success my-2 mr-2"
+          [ngClass]="{'btn-success': activityForm.valid, 'btn-secondary': !activityForm.valid}"
+          [disabled]="!activityForm.valid || isSubmit=== 1" type="submit"><i class="fa fa-check mr-2"></i>Submit</button>
+        <button class="btn btn-primary my-2" type="cancel" (click)="inputToggle(true)"><i class="fa fa-undo mr-2"></i>Batal</button>
+      </div>
+    </form>
+  </div>
+
+</div>

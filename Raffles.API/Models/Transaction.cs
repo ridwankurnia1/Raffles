@@ -12,10 +12,12 @@ namespace Raffles.API.Models
         public string TransactionType { get; set; }
         public int CategoryId { get; set; }
         public Categories Category { get; set; }
+        public int ActivityId { get; set; }
+        public Activity Activity { get; set; }
         public string Description { get; set; }        
         public decimal Amount { get; set; }
         public int ReferenceId { get; set; }
-        public int DeleteFlag { get; set; }
+        public int Active { get; set; }
         public DateTime? CreatedDate { get; set; }
         public int CreatedId { get; set; }
         public User Created { get; set; }

@@ -127,18 +127,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ActivitiesController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Data\AuthRepository.cs" />
+    <Compile Include="Data\ActivitiesRepository.cs" />
     <Compile Include="Data\CategoriesRepository.cs" />
     <Compile Include="Data\DataContext.cs" />
     <Compile Include="Data\IAuthRepository.cs" />
+    <Compile Include="Data\IActivitiesRepository.cs" />
     <Compile Include="Data\ICategoriesRepository.cs" />
     <Compile Include="Data\IUserRepository.cs" />
     <Compile Include="Data\UserRepository.cs" />
     <Compile Include="Dto\UserLoginDto.cs" />
+    <Compile Include="Dto\ActivityDto.cs" />
     <Compile Include="Dto\UserProfileDto.cs" />
     <Compile Include="Filter\GlobalExceptionFilter.cs" />
     <Compile Include="Filter\GlobalExceptionHandler.cs" />
@@ -159,7 +163,13 @@
     <Compile Include="Migrations\201904211205526_ChangeDelete.Designer.cs">
       <DependentUpon>201904211205526_ChangeDelete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904280612062_AddActivity.cs" />
+    <Compile Include="Migrations\201904280612062_AddActivity.Designer.cs">
+      <DependentUpon>201904280612062_AddActivity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\Authorization.cs" />
     <Compile Include="Models\Categories.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\User.cs" />
@@ -186,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904211205526_ChangeDelete.resx">
       <DependentUpon>201904211205526_ChangeDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904280612062_AddActivity.resx">
+      <DependentUpon>201904280612062_AddActivity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

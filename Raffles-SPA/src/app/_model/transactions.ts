@@ -6,7 +6,8 @@ export interface Transactions {
     Description: string;
     Amount: number;
     ReferenceId: number;
-    DeleteFlag: number;
     CreatedDate: Date;
     CreatedId: number;
+    ActivityId: number;
+    Active: number;
 }

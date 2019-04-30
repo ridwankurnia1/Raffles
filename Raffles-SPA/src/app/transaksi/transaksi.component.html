@@ -5,8 +5,14 @@
       <button class="btn btn-success my-2" (click)="inputToggle(false)" ><i class="fa fa-plus mr-2"></i>Transaksi</button>
     </p>    
 
-    <p-table class="table table-responsive table-striped" [value]="transactions" [paginator]="true" [rows]="10"
-      [responsive]="true" sortMode="multiple">
+    <p-table #dt class="table table-responsive table-striped" [value]="transactions" [paginator]="true" [rows]="10"
+      [responsive]="true" sortMode="multiple" [globalFilterFields]="['Id','Category.CategoryName','Description','TransactionDate']">
+      <ng-template pTemplate="caption">
+        <div style="text-align: right">        
+            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+            <input type="text" pInputText size="50" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+      </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="Id">Id</th>
@@ -18,7 +24,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-trans>
-        <tr [ngClass]="{'text-danger font-italic': trans.DeleteFlag == 1}">
+        <tr [ngClass]="{'text-danger font-italic': trans.Active == 0}">
           <td>{{trans.Id}}</td>
           <td>{{trans.Category.CategoryName}}</td>
           <td>{{trans.Description}}</td>
@@ -26,8 +32,8 @@
           <td class="text-right">{{trans.TransactionType === "D" ? (trans.Amount|number) : (trans.Amount*-1|number)}}            
           </td>
           <td>
-              <button [disabled]="trans.DeleteFlag == 1"  class="btn btn-outline-danger btn-sm"              
-              pButton (click)="selectTransaction(trans)"><i class="fa fa-times"></i></button>
+              <button [disabled]="trans.Active == 0"  class="btn btn-outline-danger btn-sm"              
+              pButton (click)="deleteTransaction(trans)"><i class="fa fa-times"></i></button>
           </td>
         </tr>
       </ng-template>
