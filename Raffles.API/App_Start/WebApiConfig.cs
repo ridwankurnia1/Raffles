@@ -23,20 +23,26 @@ namespace Raffles.API
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<ICategoriesRepository, CategoriesRepository>();
             container.RegisterType<IActivitiesRepository, ActivitiesRepository>();
+            container.RegisterType<IMenuRepository, MenuRepository>();
 
             var MapConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserProfileDto, User>();
+                cfg.CreateMap<User, UserProfileDto>();
                 cfg.CreateMap<Activity, ActivityDto>()
                     .ForMember(dest => dest.CreatedUser, opts => opts.MapFrom(src => src.Created.Username))
                     .ForMember(dest => dest.UpdatedUser, opts => opts.MapFrom(src => src.Updated.Username));
+                cfg.CreateMap<Categories, CategoryDto>()
+                    .ForMember(dest => dest.CreatedUser, opts => opts.MapFrom(src => src.Created.Username))
+                    .ForMember(dest => dest.UpdatedUser, opts => opts.MapFrom(src => src.Updated.Username));
+                cfg.CreateMap<Menu, MenuDto>()
+                    .ForMember(dest => dest.Username, opts => opts.MapFrom(src => src.user.Username));
             });
 
             IMapper mapper = MapConfig.CreateMapper();
             container.RegisterInstance(mapper);
 
-            config.DependencyResolver = new UnityResolver(container);
-            
+            config.DependencyResolver = new UnityResolver(container);            
 
             // Web API configuration and services
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));

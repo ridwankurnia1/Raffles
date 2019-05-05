@@ -42,9 +42,6 @@ export class KegiatanComponent implements OnInit {
     this.editMode = false;
     this.isSubmit = 0;
     this.activityForm.reset();
-    this.activityForm.setValue({
-      Active: 1
-    });
 
     if (load) {
       this.loadActivities();
@@ -73,7 +70,6 @@ export class KegiatanComponent implements OnInit {
   }
 
   editActivities(data: Activities) {
-    console.log(data);
     this.inputToggle(false);
     this.ActiveFlag = Boolean(data.Active);
     if (this.ActiveFlag) {
@@ -90,8 +86,8 @@ export class KegiatanComponent implements OnInit {
     this.activityForm.setValue({
       ActivityId: data.ActivityId,
       ActivityName: data.ActivityName,
-      ActivityStart: data.ActivityStart,
-      ActivityEnd: data.ActivityEnd,
+      ActivityStart: new Date(data.ActivityStart),
+      ActivityEnd: new Date(data.ActivityEnd),
       Active: data.Active
     });
   }
@@ -106,6 +102,7 @@ export class KegiatanComponent implements OnInit {
 
       if (!this.editMode) {
         this.activity.ActivityId = 0;
+        this.activity.Active = 1;
         this.activityService.saveActivities(this.activity).subscribe(
           () => {
             this.alertify.success('Registrasi kegiatan berhasil');

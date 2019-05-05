@@ -33,9 +33,12 @@ namespace Raffles.API.Controllers
         // GET: api/Users
         [Route("api/Users")]
         [HttpGet]
-        public IQueryable<User> GetUsers()
+        public async Task<IHttpActionResult> GetUsers()
         {
-            return db.Users;
+            var users = await _Repo.GetUsers();
+            IEnumerable<UserProfileDto> userProfiles = _Mapper.Map<IEnumerable<UserProfileDto>>(users);
+
+            return Ok(userProfiles);
         }
 
         // GET: api/Users/5        

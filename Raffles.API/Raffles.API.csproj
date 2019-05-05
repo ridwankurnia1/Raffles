@@ -130,6 +130,7 @@
     <Compile Include="Controllers\ActivitiesController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\MenusController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Data\AuthRepository.cs" />
@@ -139,8 +140,12 @@
     <Compile Include="Data\IAuthRepository.cs" />
     <Compile Include="Data\IActivitiesRepository.cs" />
     <Compile Include="Data\ICategoriesRepository.cs" />
+    <Compile Include="Data\IMenuRepository.cs" />
     <Compile Include="Data\IUserRepository.cs" />
+    <Compile Include="Data\MenuRepository.cs" />
     <Compile Include="Data\UserRepository.cs" />
+    <Compile Include="Dto\CategoryDto.cs" />
+    <Compile Include="Dto\MenuDto.cs" />
     <Compile Include="Dto\UserLoginDto.cs" />
     <Compile Include="Dto\ActivityDto.cs" />
     <Compile Include="Dto\UserProfileDto.cs" />
@@ -167,9 +172,17 @@
     <Compile Include="Migrations\201904280612062_AddActivity.Designer.cs">
       <DependentUpon>201904280612062_AddActivity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905011038173_AddMenu.cs" />
+    <Compile Include="Migrations\201905011038173_AddMenu.Designer.cs">
+      <DependentUpon>201905011038173_AddMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905011145281_RevMenu.cs" />
+    <Compile Include="Migrations\201905011145281_RevMenu.Designer.cs">
+      <DependentUpon>201905011145281_RevMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Activity.cs" />
-    <Compile Include="Models\Authorization.cs" />
+    <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Categories.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\User.cs" />
@@ -199,6 +212,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904280612062_AddActivity.resx">
       <DependentUpon>201904280612062_AddActivity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905011038173_AddMenu.resx">
+      <DependentUpon>201905011038173_AddMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905011145281_RevMenu.resx">
+      <DependentUpon>201905011145281_RevMenu.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

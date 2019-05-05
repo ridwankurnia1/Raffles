@@ -23,6 +23,8 @@ import { OtorisasiComponent } from './otorisasi/otorisasi.component';
 import { KategoriComponent } from './kategori/kategori.component';
 import { KegiatanComponent } from './kegiatan/kegiatan.component';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
+import { ActivityService } from './_services/activity.service';
+import { UserService } from './_services/user.service';
 
 @NgModule({
    declarations: [
@@ -55,7 +57,9 @@ import { ErrorInterceptorProvider } from './_services/error.interceptor';
       AlertifyService,
       AuthService,
       AuthGuard,
-      TransService
+      TransService,
+      ActivityService,
+      UserService
    ],
    bootstrap: [
       AppComponent

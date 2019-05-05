@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using Raffles.API.Models;
 
@@ -16,7 +17,7 @@ namespace Raffles.API.Data
 
         public async Task<User> Login(string username, string password)
         {
-            var user = _Context.Users.FirstOrDefault(x => x.Username == username);
+            var user = await _Context.Users.FirstOrDefaultAsync(x => x.Username == username);
 
             if (user == null)
                 return null;

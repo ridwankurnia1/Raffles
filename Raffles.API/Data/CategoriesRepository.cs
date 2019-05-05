@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 
 using Raffles.API.Models;
+using Raffles.API.Dto;
 
 namespace Raffles.API.Data
 {
@@ -23,7 +24,7 @@ namespace Raffles.API.Data
             await _Context.SaveChangesAsync();
         }
 
-        public async Task DeleteCategory(Categories categories)
+        public async Task DeleteCategory(CategoryDto categories)
         {
             var category = new Categories()
             {
@@ -54,7 +55,7 @@ namespace Raffles.API.Data
             return category;
         }
 
-        public async Task UpdateCategory(Categories categories)
+        public async Task UpdateCategory(CategoryDto categories)
         {
             var category = new Categories()
             {

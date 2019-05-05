@@ -35,7 +35,7 @@ namespace Raffles.API.Data
             await _Context.SaveChangesAsync();
         }
 
-        public async Task DeleteActivity(Activity activity)
+        public async Task DeleteActivity(ActivityDto activity)
         {
             var act = new Activity()
             {
@@ -66,7 +66,14 @@ namespace Raffles.API.Data
             return activity;
         }
 
-        public async Task UpdateActivity(Activity activity)
+        public async Task<Activity> GetActivityByName(string ActivityName)
+        {
+            var activity = await _Context.Activities.FirstOrDefaultAsync(x => x.ActivityName == ActivityName);
+
+            return activity;
+        }
+
+        public async Task UpdateActivity(ActivityDto activity)
         {
             var act = new Activity()
             {
@@ -77,6 +84,7 @@ namespace Raffles.API.Data
             act.ActivityName = activity.ActivityName;
             act.ActivityStart = activity.ActivityStart;
             act.ActivityEnd = activity.ActivityEnd;
+            act.Active = activity.Active;
             act.UpdatedId = activity.UpdatedId;
             act.UpdatedDate = DateTime.Now;
 

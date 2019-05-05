@@ -4,6 +4,8 @@ import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 import { User } from '../_model/user';
+import { Menus } from '../_model/menu';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
   decodedToken: any;
   currentUser: User;
+  navMenu: Menus[];
 
 constructor(private http: HttpClient) { }
 
@@ -33,5 +36,17 @@ constructor(private http: HttpClient) { }
   loggedIn() {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  saveAuth(auth: Menus) {
+    return this.http.post(this.baseUrl + 'api/activities', auth);
+  }
+
+  getAuth(): Observable<Menus[]> {
+    return this.http.get<Menus[]>(this.baseUrl + 'api/activities');
+  }
+
+  delAuth(auth: Menus) {
+    return this.http.put(this.baseUrl + 'api/activities', auth);
   }
 }

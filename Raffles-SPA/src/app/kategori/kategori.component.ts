@@ -34,13 +34,9 @@ export class KategoriComponent implements OnInit {
 
   inputToggle(load: boolean) {
     this.inputMode = !this.inputMode;
-    this.editMode = false;
     this.isSubmit = 0;
+    this.editMode = false;
     this.kategoriForm.reset();
-    this.kategoriForm.setValue({
-      Active: 1
-    });
-
     if (load) {
       this.loadCategories();
     }
@@ -96,6 +92,7 @@ export class KategoriComponent implements OnInit {
 
       if (!this.editMode) {
         this.category.CategoryId = 0;
+        this.category.Active = 1;
         this.transService.saveCategories(this.category).subscribe(
           () => {
             this.alertify.success('Registrasi kategori berhasil');

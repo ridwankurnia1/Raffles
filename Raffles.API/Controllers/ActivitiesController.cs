@@ -57,10 +57,10 @@ namespace Raffles.API.Controllers
         }
 
         // PUT: api/Activities/5
-        [Route("api/Categories/{id}")]
+        [Route("api/Activities/{id}")]
         [HttpPut]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutActivity(int id, Activity activity)
+        public async Task<IHttpActionResult> PutActivity(int id, ActivityDto activity)
         {
             var activityFromRepo = await _Repo.GetActivities(id);
 
@@ -68,8 +68,11 @@ namespace Raffles.API.Controllers
             {
                 if (activityFromRepo.Active == activity.Active)
                 {
-                    if (await _Repo.ActivityExists(activity.ActivityName))
+                    if (activityFromRepo.ActivityName != activity.ActivityName && 
+                        await _Repo.ActivityExists(activity.ActivityName))
+                    {
                         return BadRequest("Kegiatan sudah pernah dibuat");
+                    }                    
                 }
             }
             else
@@ -100,7 +103,7 @@ namespace Raffles.API.Controllers
         // DELETE: api/Activities/5
         [Route("api/Activities")]
         [HttpPut]
-        public async Task<IHttpActionResult> DeleteActivity(Activity activity)
+        public async Task<IHttpActionResult> DeleteActivity(ActivityDto activity)
         {
             await _Repo.DeleteActivity(activity);
 

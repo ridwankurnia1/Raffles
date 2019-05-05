@@ -1,4 +1,5 @@
-﻿using Raffles.API.Models;
+﻿using Raffles.API.Dto;
+using Raffles.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace Raffles.API.Data
         Task Add(Categories categories);
         Task<IEnumerable<Categories>> GetCategories();
         Task<Categories> GetCategories(int id);
-        Task UpdateCategory(Categories categories);
-        Task DeleteCategory(Categories categories);
+        Task UpdateCategory(CategoryDto categories);
+        Task DeleteCategory(CategoryDto categories);
         Task<bool> CategoryExists(string Category, string TransType);
     }
 }

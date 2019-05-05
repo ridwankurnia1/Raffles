@@ -10,6 +10,6 @@ export interface Activities {
     UpdatedId: number;
     ActivityStart?: Date;
     ActivityEnd?: Date;
-    Created?: User;
-    Updated?: User;
+    CreatedUser?: string;
+    UpdatedUser?: string;
 }

@@ -12,6 +12,7 @@ using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using AutoMapper;
 using Raffles.API.Data;
+using Raffles.API.Dto;
 using Raffles.API.Models;
 
 namespace Raffles.API.Controllers
@@ -19,7 +20,7 @@ namespace Raffles.API.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CategoriesController : ApiController
     {
-        private DataContext db = new DataContext();
+        //private DataContext db = new DataContext();
         private readonly ICategoriesRepository _Repo;
         private readonly IMapper _Mapper;
 
@@ -32,15 +33,18 @@ namespace Raffles.API.Controllers
         // GET: api/Categories
         [Route("api/Categories")]
         [HttpGet]
-        public async Task<IEnumerable<Categories>> GetCategories()
-        {            
-            return await _Repo.GetCategories();
+        public async Task<IEnumerable<CategoryDto>> GetCategories()
+        {
+            var categories = await _Repo.GetCategories();
+            IEnumerable<CategoryDto> dto = _Mapper.Map<IEnumerable<CategoryDto>>(categories);
+
+            return dto;
         }
 
         // GET: api/Categories/5
         [Route("api/Categories/{id}")]
         [HttpGet]
-        [ResponseType(typeof(Categories))]
+        [ResponseType(typeof(CategoryDto))]
         public async Task<IHttpActionResult> GetCategory(int id)
         {
             Categories category = await _Repo.GetCategories(id);
@@ -49,14 +53,14 @@ namespace Raffles.API.Controllers
                 return NotFound();
             }
 
-            return Ok(category);
+            return Ok(_Mapper.Map<CategoryDto>(category));
         }
 
         // PUT: api/Categories/5
         [Route("api/Categories/{id}")]
         [HttpPut]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutCategory(int id, Categories category)
+        public async Task<IHttpActionResult> PutCategory(int id, CategoryDto category)
         {
             var categoryFromRepo = await _Repo.GetCategories(id);
 
@@ -66,7 +70,7 @@ namespace Raffles.API.Controllers
                 {
                     if (await _Repo.CategoryExists(category.CategoryName, category.TransactionType))
                         return BadRequest("Kategori sudah pernah dibuat");
-                }                    
+                }
             }
             else
             {
@@ -83,34 +87,34 @@ namespace Raffles.API.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> PostCategory(Categories category)
         {
-            if (await _Repo.CategoryExists(category.CategoryName,category.TransactionType))
+            if (await _Repo.CategoryExists(category.CategoryName, category.TransactionType))
                 return BadRequest("Kategori sudah pernah dibuat");
 
             category.CreatedDate = DateTime.Now;
             category.UpdatedDate = DateTime.Now;
             await _Repo.Add(category);
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return StatusCode(HttpStatusCode.OK);
         }
 
         // DELETE: api/Categories
         [Route("api/Categories")]
         [HttpPut]
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> DeleteCategory(Categories categories)
+        public async Task<IHttpActionResult> DeleteCategory(CategoryDto categories)
         {
             await _Repo.DeleteCategory(categories);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

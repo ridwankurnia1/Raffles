@@ -5,7 +5,7 @@
     </p>    
 
     <p-table #dt class="table table-responsive table-striped" [value]="listActivity" [paginator]="true" [rows]="10"
-      [responsive]="true" sortMode="multiple" [globalFilterFields]="['ActivityId','ActivityName','ActivityStart','ActivityEnd','Updated.Username']" >
+      [responsive]="true" sortMode="multiple" [globalFilterFields]="['ActivityId','ActivityName','ActivityStart','ActivityEnd','UpdatedUser']" >
       <ng-template pTemplate="caption">
           <div style="text-align: right">        
               <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -34,8 +34,8 @@
           <td>{{activity.ActivityName}}</td>
           <td>{{activity.ActivityStart | date: 'dd-MM-yyyy'}}</td>
           <td>{{activity.ActivityEnd | date: 'dd-MM-yyyy'}}</td>
-          <td>{{activity.Updated.Username}}</td>
-          <td>{{activity.UpdatedDate | date: 'dd-MM-yyyy'}}</td>
+          <td>{{activity.UpdatedUser}}</td>
+          <td>{{activity.UpdatedDate | date: 'dd-MM-yyyy HH:mm'}}</td>
           <td>
               <button [disabled]="activity.Active == 0"  class="btn btn-outline-danger btn-sm"              
               pButton (click)="deleteActivity(activity)"><i class="fa fa-times"></i></button>
@@ -66,9 +66,10 @@
         <div class="form-group col-md-6">
           <label for="ActivityStart">Mulai Kegiatan</label>
           <div class="input-group">
-            <input class="form-control" formControlName="ActivityStart" [ngClass]="{'is-invalid': activityForm.get('ActivityStart').errors 
-            && activityForm.get('ActivityStart').touched}" #dp="bsDatepicker" placeholder="dd-mm-yyyy" type="text"
-              bsDatepicker [bsConfig]="bsConfig">
+            <input class="form-control" formControlName="ActivityStart" 
+               [ngClass]="{'is-invalid': activityForm.get('ActivityStart').errors 
+                        && activityForm.get('ActivityStart').touched}" #dp="bsDatepicker" 
+                        placeholder="dd-mm-yyyy" type="text" bsDatepicker [bsConfig]="bsConfig" />            
             <div class="input-group-append">
               <button class="btn btn-secondary btn-outline-secondary" (click)="dp.toggle()"
                 [attr.aria-expanded]="dp.isOpen" type="button" id="button-addon2">

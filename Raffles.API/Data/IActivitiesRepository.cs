@@ -13,8 +13,8 @@ namespace Raffles.API.Data
         Task Add(Activity activity);
         Task<IEnumerable<Activity>> GetActivities();
         Task<Activity> GetActivities(int id);
-        Task UpdateActivity(Activity activity);
-        Task DeleteActivity(Activity activity);
+        Task UpdateActivity(ActivityDto activity);
+        Task DeleteActivity(ActivityDto activity);
         Task<bool> ActivityExists(string Activity);
     }
 }

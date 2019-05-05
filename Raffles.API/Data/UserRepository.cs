@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Raffles.API.Dto;
 using Raffles.API.Models;
 
 namespace Raffles.API.Data
@@ -84,6 +84,11 @@ namespace Raffles.API.Data
                 return true;
 
             return false;
+        }
+
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            return await _Context.Users.ToListAsync();
         }
     }
 }

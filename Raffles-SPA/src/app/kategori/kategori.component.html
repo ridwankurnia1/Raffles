@@ -1,89 +1,93 @@
 <div class="container">
-    <div *ngIf="!inputMode" class="mt-2 mb-2">
-      <p>
-        <button class="btn btn-success my-2" (click)="inputToggle(false)" ><i class="fa fa-plus mr-2"></i>Kategori</button>
-      </p>    
-  
-      <p-table #dt class="table table-responsive table-striped" [value]="listkategori" [paginator]="true" [rows]="10"
-        [responsive]="true" sortMode="multiple" [globalFilterFields]="['CategoryId','CategoryName','TransactionType','Updated.Username']" >
-        <ng-template pTemplate="caption">
-            <div style="text-align: right">        
-                <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-                <input type="text" pInputText size="50" placeholder="Search" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-          <tr>
-            <th style="width:4em"></th>
-            <th style="width:4em" pSortableColumn="CategoryId">Id</th>
-            <th pSortableColumn="CategoryName">Kategori</th>
-            <th pSortableColumn="TransactionType">Jenis Transaksi</th>
-            <th pSortableColumn="Updated.Username">User ID</th>
-            <th pSortableColumn="UpdatedDate">Tanggal Update</th>
-            <th style="width:4em"></th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-kategori>
-          <tr [ngClass]="{'text-danger font-italic': kategori.Active == 0}">
-             <td>
-                <button class="btn btn-outline-warning btn-sm"              
-                pButton (click)="editKategori(kategori)"><i class="fa fa-pencil"></i></button>
-            </td>
-            <td>{{kategori.CategoryId}}</td>
-            <td>{{kategori.CategoryName}}</td>
-            <td>{{kategori.TransactionType == "D" ? "Pemasukan" : "Pengeluaran" }}</td>
-            <td>{{kategori.Updated.Username}}</td>
-            <td>{{kategori.CreatedDate | date: 'dd-MM-yyyy'}}</td>            
-            <td>
-                <button [disabled]="kategori.Active == 0"  class="btn btn-outline-danger btn-sm"              
-                pButton (click)="deleteKategori(kategori)"><i class="fa fa-times"></i></button>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  
-    <div *ngIf="inputMode" class="col-md-6 mt-3">
-      <h4 class="mb-3">Input Kategori</h4>
-      <form [formGroup]="kategoriForm" (ngSubmit)="submitKategori()">
-        <div class="mb-3" style="display: none;">
-          <label for="categoryid">ID</label>
-          <input type="text" class="form-control" formControlName="CategoryId">
-        </div>
-        <div class="mb-3">
-          <label for="transaksi">Transaksi</label>
-          <select class="custom-select d-block w-100" formControlName="TransactionType" [ngClass]="{'is-invalid': kategoriForm.get('TransactionType').errors 
-            && kategoriForm.get('TransactionType').touched}">
-            <option value="">Pilih Transaksi ...</option>
-            <option value="D">Pemasukan</option>
-            <option value="K">Pengeluaran</option>
-          </select>
-          <div class="invalid-feedback">
-            Harap pilih jenis transaksi
-          </div>        
-        </div>
-    
-        <div class="mb-3">
-          <label for="Kategori">Kategori</label>
-          <input type="text" formControlName="CategoryName" [ngClass]="{'is-invalid': kategoriForm.get('CategoryName').errors 
-          && kategoriForm.get('CategoryName').touched}" class="form-control">
-          <div class="invalid-feedback">
-            Harap input kategori
-          </div>
-        </div>
-    
-        <div *ngIf="editMode && !ActiveFlag" class="mb-3 custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="chkActive" formControlName="Active">
-          <label class="custom-control-label" for="chkActive">Active</label>
-        </div>
+  <div *ngIf="!inputMode" class="mt-2 mb-2">
+    <p>
+      <button class="btn btn-success my-2" (click)="inputToggle(false)"><i class="fa fa-plus mr-2"></i>Kategori</button>
+    </p>
 
-        <div class="form-group">
-          <button class="btn btn-success my-2 mr-2"
-            [ngClass]="{'btn-success': kategoriForm.valid, 'btn-secondary': !kategoriForm.valid}"
-            [disabled]="!kategoriForm.valid || isSubmit=== 1" type="submit"><i class="fa fa-check mr-2"></i>Submit</button>
-          <button class="btn btn-primary my-2" type="cancel" (click)="inputToggle(true)"><i class="fa fa-undo mr-2"></i>Batal</button>
+    <p-table #dt class="table table-responsive table-striped" [value]="listkategori" [paginator]="true" [rows]="10"
+      [responsive]="true" sortMode="multiple"
+      [globalFilterFields]="['CategoryId','CategoryName','TransactionType','UpdatedUser']">
+      <ng-template pTemplate="caption">
+        <div style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+          <input type="text" pInputText size="50" placeholder="Search"
+            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
         </div>
-      </form>
-    </div>
-  
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:4em"></th>
+          <th style="width:4em" pSortableColumn="CategoryId">Id</th>
+          <th pSortableColumn="CategoryName">Kategori</th>
+          <th pSortableColumn="TransactionType">Jenis Transaksi</th>
+          <th pSortableColumn="UpdatedUser">User ID</th>
+          <th pSortableColumn="UpdatedDate">Tanggal Update</th>
+          <th style="width:4em"></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-category>
+        <tr [ngClass]="{'text-danger font-italic': category.Active == 0}">
+          <td>
+            <button class="btn btn-outline-warning btn-sm" pButton (click)="editKategori(category)"><i
+                class="fa fa-pencil"></i></button>
+          </td>
+          <td>{{category.CategoryId}}</td>
+          <td>{{category.CategoryName}}</td>
+          <td>{{category.TransactionType == "D" ? "Pemasukan" : "Pengeluaran" }}</td>
+          <td>{{category.UpdatedUser}}</td>
+          <td>{{category.CreatedDate | date: 'dd-MM-yyyy HH:mm'}}</td>
+          <td>
+            <button [disabled]="category.Active == 0" class="btn btn-outline-danger btn-sm" pButton
+              (click)="deleteKategori(category)"><i class="fa fa-times"></i></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
+
+  <div *ngIf="inputMode" class="col-md-6 mt-3">
+    <h4 class="mb-3">Input Kategori</h4>
+    <form [formGroup]="kategoriForm" (ngSubmit)="submitKategori()">
+      <div class="mb-3" style="display: none;">
+        <label for="categoryid">ID</label>
+        <input type="text" class="form-control" formControlName="CategoryId">
+      </div>
+      <div class="mb-3">
+        <label for="transaksi">Transaksi</label>
+        <select class="custom-select d-block w-100" formControlName="TransactionType" [ngClass]="{'is-invalid': kategoriForm.get('TransactionType').errors 
+            && kategoriForm.get('TransactionType').touched}">
+          <option value="">Pilih Transaksi ...</option>
+          <option value="D">Pemasukan</option>
+          <option value="K">Pengeluaran</option>
+        </select>
+        <div class="invalid-feedback">
+          Harap pilih jenis transaksi
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="Kategori">Kategori</label>
+        <input type="text" formControlName="CategoryName" [ngClass]="{'is-invalid': kategoriForm.get('CategoryName').errors 
+          && kategoriForm.get('CategoryName').touched}" class="form-control">
+        <div class="invalid-feedback">
+          Harap input kategori
+        </div>
+      </div>
+
+      <div *ngIf="editMode && !ActiveFlag" class="mb-3 custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="chkActive" formControlName="Active">
+        <label class="custom-control-label" for="chkActive">Active</label>
+      </div>
+
+      <div class="form-group">
+        <button class="btn btn-success my-2 mr-2"
+          [ngClass]="{'btn-success': kategoriForm.valid, 'btn-secondary': !kategoriForm.valid}"
+          [disabled]="!kategoriForm.valid || isSubmit=== 1" type="submit"><i
+            class="fa fa-check mr-2"></i>Submit</button>
+        <button class="btn btn-primary my-2" type="cancel" (click)="inputToggle(true)"><i
+            class="fa fa-undo mr-2"></i>Batal</button>
+      </div>
+    </form>
+  </div>
+
+</div>
