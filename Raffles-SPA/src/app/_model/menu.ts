@@ -4,6 +4,6 @@ export interface Menus {
     MenuGroup: string;
     MenuName: string;
     MenuType: string;
-    UserName?: string;
+    Username?: string;
     MenuChild?: Menus[];
 }

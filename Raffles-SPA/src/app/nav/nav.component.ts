@@ -4,6 +4,8 @@ import { AlertifyService } from '../_services/alertify.service';
 import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Menus } from '../_model/menu';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { BuiltinType } from '@angular/compiler';
 
 @Component({
   selector: 'app-nav',
@@ -19,6 +21,8 @@ export class NavComponent implements OnInit {
 //  menu2: Menus[];
   nMenu: Menus[];
   dMenu: Menus[];
+  LoginText: string;
+  process: boolean;
 
   constructor(public authService: AuthService, private alertiy: AlertifyService
     , private router: Router, private modalService: BsModalService) { }
@@ -100,8 +104,14 @@ export class NavComponent implements OnInit {
   }
 
   login() {
+    this.LoginText = '';
+    this.process = true;
     this.authService.login(this.model).subscribe(next => {
       this.alertiy.success('Login berhasil');
+      if (!this.modalRef) {
+        return;
+      }
+      this.modalRef.hide();
     }, error => {
       this.alertiy.error(error);
     });
@@ -117,6 +127,8 @@ export class NavComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
+    this.LoginText = 'Login';
+    this.process = false;
     this.modalRef = this.modalService.show(template);
   }
 }

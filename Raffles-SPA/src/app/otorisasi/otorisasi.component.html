@@ -17,15 +17,15 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th style="width:4em" pSortableColumn="UserName">User</th>
-          <th pSortableColumn="MenuName">Program</th>
+          <th pSortableColumn="UserName">User</th>
+          <th pSortableColumn="MenuGroup">Program</th>          
           <th style="width:4em"></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-auth>
         <tr>
-          <td>{{auth.UserName}}</td>
-          <td>{{auth.MenuName}}</td>
+          <td>{{auth.Username}}</td>
+          <td>{{auth.MenuGroup}} {{auth.MenuName}}</td>          
           <td>
             <button class="btn btn-outline-danger btn-sm" pButton (click)="deleteAuth(auth)"><i
                 class="fa fa-times"></i></button>

@@ -39,14 +39,14 @@ constructor(private http: HttpClient) { }
   }
 
   saveAuth(auth: Menus) {
-    return this.http.post(this.baseUrl + 'api/activities', auth);
+    return this.http.post(environment.apiUrl + 'api/menus', auth);
   }
 
   getAuth(): Observable<Menus[]> {
-    return this.http.get<Menus[]>(this.baseUrl + 'api/activities');
+    return this.http.get<Menus[]>(environment.apiUrl + 'api/menus');
   }
 
   delAuth(auth: Menus) {
-    return this.http.put(this.baseUrl + 'api/activities', auth);
+    return this.http.put(environment.apiUrl + 'api/menus', auth);
   }
 }

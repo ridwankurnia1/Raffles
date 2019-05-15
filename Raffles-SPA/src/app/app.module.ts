@@ -7,6 +7,8 @@ import { BsDropdownModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import * as jsPDF from 'jspdf';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -44,13 +46,14 @@ import { UserService } from './_services/user.service';
       FormsModule,
       ReactiveFormsModule,
       TableModule,
+      ProgressSpinnerModule,
       CollapseModule.forRoot(),
       BsDropdownModule.forRoot(),
       BsDatepickerModule.forRoot(),
       ModalModule.forRoot(),
       TabsModule.forRoot(),
       RouterModule.forRoot(appRoutes),
-      PaginatorModule
+      PaginatorModule,
    ],
    providers: [
       ErrorInterceptorProvider,

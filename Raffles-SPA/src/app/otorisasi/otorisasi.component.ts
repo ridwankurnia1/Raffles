@@ -31,8 +31,8 @@ export class OtorisasiComponent implements OnInit {
   ngOnInit() {
     this.createAuthProgramForm();
     this.createAuthUserForm();
+    this.loadMenus();
     this.loadUsers();
-    console.log(this.authService.navMenu);
   }
 
   createAuthProgramForm() {
@@ -47,9 +47,17 @@ export class OtorisasiComponent implements OnInit {
     });
   }
 
+  loadMenus() {
+    this.authService.getAuth().subscribe((menus: Menus[]) => {
+      this.listAuth = menus;
+    }, error => {
+      this.alertify.error(error);
+    });
+  }
+
   loadUsers() {
-    this.userService.getUsers().subscribe((users: User[]) => {
-      this.users = users.filter((item) => item.Active === 1);
+    this.userService.getUsers().subscribe((user: User[]) => {
+      this.users = user;
     }, error => {
       this.alertify.error(error);
     });

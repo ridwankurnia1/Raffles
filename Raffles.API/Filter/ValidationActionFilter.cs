@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http.Controllers;
@@ -20,6 +17,16 @@ namespace Raffles.API.Filter
                 actionContext.Response.Headers.Add("Application-Error", "Bad Request");
                 actionContext.Response.Headers.Add("Access-Control-Expose-Headers", "Application-Error");
                 actionContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            }
+        }
+
+        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        {   
+            if (actionExecutedContext.Request.Properties.ContainsKey("Pagination"))
+            {
+                var paginationHeader = actionExecutedContext.Request.Properties["Pagination"];
+                actionExecutedContext.Response.Content.Headers.Add("Pagination", paginationHeader.ToString());
+                actionExecutedContext.Response.Content.Headers.Add("Access-Control-Expose-Headers", "Pagination");
             }
         }
     }
