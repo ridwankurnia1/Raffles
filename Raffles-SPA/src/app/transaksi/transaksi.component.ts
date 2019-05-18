@@ -43,7 +43,7 @@ export class TransaksiComponent implements OnInit {
       dateFr: '',
       dateTo: '',
       trType: '',
-      activityId: 1
+      activity: 1
     }
 
     this.loadTrans();

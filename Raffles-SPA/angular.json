@@ -29,7 +29,8 @@
             ],
             "scripts": [
               "node_modules/alertifyjs/build/alertify.min.js",
-               "node_modules/jspdf/dist/jspdf.min.js" 
+              "node_modules/jspdf/dist/jspdf.min.js",
+              "node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.min.js"
             ]
           },
           "configurations": {

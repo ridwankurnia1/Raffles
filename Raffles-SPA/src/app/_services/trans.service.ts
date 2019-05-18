@@ -48,9 +48,24 @@ export class TransService {
     );
   }
 
-  // getTransactions(): Observable<Transactions[]> {
-  //   return this.http.get<Transactions[]>(this.baseUrl + 'api/transactions');
-  // }
+  getTransRpt(transParams?): Observable<Transactions[]> {
+
+    let params = new HttpParams();
+
+    if (transParams != null) {
+      params = params.append('dateFr', transParams.dateFr);
+      params = params.append('dateTo', transParams.dateTo);
+      params = params.append('trType', transParams.trType);
+      params = params.append('activity', transParams.activity);
+    }
+
+    return this.http.get<Transactions[]>(this.baseUrl + 'api/transrpt', { observe: 'response', params})
+    .pipe(
+      map(response => {
+        return response.body;
+      })
+    );
+  }
 
   delTransactions(id) {
     return this.http.delete(this.baseUrl + 'api/transactions/' + id);

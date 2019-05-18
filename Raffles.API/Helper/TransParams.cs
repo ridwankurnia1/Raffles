@@ -20,6 +20,7 @@ namespace Raffles.API.Helper
         public string dateFr { get; set; }
         public string dateTo { get; set; }
         public string trType { get; set; }
-        public int ActivityId { get; set; }
+        public int activity { get; set; }
+        public string Active { get; set; }
     }
 }

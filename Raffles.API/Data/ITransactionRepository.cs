@@ -12,6 +12,7 @@ namespace Raffles.API.Data
     public interface ITransactionRepository
     {
         Task Add(Transaction transaction);
+        Task<IEnumerable<Transaction>> GetTransReport(TransParams transParams);
         Task<PagedList<Transaction>> GetTransaction(TransParams transParams);
         Task<Transaction> GetTransaction(int id);        
         Task DeleteTransaction(Transaction transaction);        

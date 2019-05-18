@@ -39,7 +39,12 @@ namespace Raffles.API.Data
             _Context.transactions.Attach(trans);
             trans.Active = 0;
 
-            transaction.Amount = transaction.Amount * (-1);
+            if (transaction.TransactionType == "D")
+                transaction.TransactionType = "K";
+            else if (transaction.TransactionType == "K")
+                transaction.TransactionType = "D";
+
+            transaction.Description = transaction.Description + " (koreksi)";
             transaction.Active = 0;
             transaction.ReferenceId = trans.Id;
             transaction.TransactionDate = DateTime.Now;
@@ -49,14 +54,66 @@ namespace Raffles.API.Data
             await _Context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<Transaction>> GetTransReport(TransParams transParams)
+        {
+            var transaction = _Context.transactions.Include(u => u.Created).Include(c => c.Category).Include(a => a.Activity)
+                .OrderBy(t => t.CategoryId).ThenByDescending(t => t.Id).AsQueryable();
+
+            if (transParams.activity > 0)
+            {
+                transaction = transaction.Where(t => t.ActivityId == transParams.activity);
+            }
+
+            if (!string.IsNullOrEmpty(transParams.Active))
+            {
+                int active = 0;
+                if (int.TryParse(transParams.Active,out active))
+                {
+                    transaction = transaction.Where(t => t.Active == active);
+                }
+            }
+
+            DateTime? dtFr = null;
+            DateTime? dtTo = null;
+
+            if (!string.IsNullOrEmpty(transParams.dateFr))
+                dtFr = CommonMethod.stringToDate(transParams.dateFr);
+
+            if (!string.IsNullOrEmpty(transParams.dateTo))
+                dtTo = CommonMethod.stringToDate(transParams.dateTo);
+
+            if (dtFr != null)
+            {
+                if (dtTo != null)
+                {
+                    transaction = transaction.Where(t => t.TransactionDate >= dtFr && t.TransactionDate <= dtTo);
+                }
+                else
+                {
+                    transaction = transaction.Where(t => t.TransactionDate >= dtFr);
+                }
+            }
+            else if (dtTo != null)
+            {
+                transaction = transaction.Where(t => t.TransactionDate <= dtTo);
+            }
+
+            if (!string.IsNullOrEmpty(transParams.trType))
+            {
+                transaction = transaction.Where(t => t.TransactionType == transParams.trType);
+            }
+
+            return await transaction.ToListAsync();
+        }
+
         public async Task<PagedList<Transaction>> GetTransaction(TransParams transParams)
         {
             var transaction = _Context.transactions.Include(u => u.Created).Include(c => c.Category).Include(a => a.Activity)
                 .OrderByDescending(t => t.Id).AsQueryable();
             
-            if (transParams.ActivityId > 0)
+            if (transParams.activity > 0)
             {
-                transaction = transaction.Where(t => t.ActivityId == transParams.ActivityId);                
+                transaction = transaction.Where(t => t.ActivityId == transParams.activity);                
             }
 
             DateTime? dtFr = null;

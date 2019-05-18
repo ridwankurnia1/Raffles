@@ -50,6 +50,15 @@ namespace Raffles.API.Controllers
             return Ok(_Mapper.Map<IEnumerable<TransactionDto>>(trans));
         }
 
+        [Route("api/transrpt")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetTransReport([FromUri]TransParams transParams)
+        {
+            var trans = await _Repo.GetTransReport(transParams);
+
+            return Ok(_Mapper.Map<IEnumerable<TransactionDto>>(trans));
+        }
+
         // GET: api/Transactions/5
         [Route("api/Transactions/{id}")]
         [HttpGet]
@@ -102,6 +111,7 @@ namespace Raffles.API.Controllers
         //}
 
         // POST: api/Transactions
+
         [Route("api/Transactions")]
         [HttpPost]
         public async Task<IHttpActionResult> PostTransaction(Transaction transaction)

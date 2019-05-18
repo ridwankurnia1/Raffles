@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import * as jsPDF from 'jspdf';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
