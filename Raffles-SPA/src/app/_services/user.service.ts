@@ -12,18 +12,18 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + 'api/users');
+    return this.http.get<User[]>(this.baseUrl + 'users');
   }
 
   regUser(user: User) {
-    return this.http.post(this.baseUrl + 'api/users', user);
+    return this.http.post(this.baseUrl + 'users', user);
   }
 
   edtUser(id: number, user: User) {
-    return this.http.put(this.baseUrl + 'api/users/' + id, user);
+    return this.http.put(this.baseUrl + 'users/' + id, user);
   }
 
   delUser(id: number) {
-    return this.http.delete(this.baseUrl + 'api/users/' + id);
+    return this.http.delete(this.baseUrl + 'users/' + id);
   }
 }

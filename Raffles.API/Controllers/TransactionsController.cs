@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Raffles.API.Data;
 using Raffles.API.Dto;
+using Raffles.API.Filter;
 using Raffles.API.Helper;
 using Raffles.API.Models;
 
@@ -35,7 +36,7 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Transactions
-        [Route("api/Transactions")]
+        [Route("Transactions")]
         [HttpGet]
         public async Task<IHttpActionResult> Gettransactions([FromUri]TransParams transParams)
         {
@@ -50,7 +51,7 @@ namespace Raffles.API.Controllers
             return Ok(_Mapper.Map<IEnumerable<TransactionDto>>(trans));
         }
 
-        [Route("api/transrpt")]
+        [Route("Transaction/report")]
         [HttpGet]
         public async Task<IHttpActionResult> GetTransReport([FromUri]TransParams transParams)
         {
@@ -60,7 +61,7 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Transactions/5
-        [Route("api/Transactions/{id}")]
+        [Route("Transactions/{id}")]
         [HttpGet]
         [ResponseType(typeof(Transaction))]
         public async Task<IHttpActionResult> GetTransaction(int id)
@@ -112,7 +113,7 @@ namespace Raffles.API.Controllers
 
         // POST: api/Transactions
 
-        [Route("api/Transactions")]
+        [Route("Transactions")]
         [HttpPost]
         public async Task<IHttpActionResult> PostTransaction(Transaction transaction)
         {
@@ -128,7 +129,7 @@ namespace Raffles.API.Controllers
         }
 
         // DELETE: api/Transactions/5
-        [Route("api/Transactions/{id}")]
+        [Route("Transactions/{id}")]
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteTransaction(int id)
         {

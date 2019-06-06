@@ -31,7 +31,7 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Users
-        [Route("api/Users")]
+        [Route("Users")]
         [HttpGet]
         public async Task<IHttpActionResult> GetUsers()
         {
@@ -42,7 +42,7 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Users/5        
-        [Route("api/users/{id}", Name = "GetUser")]
+        [Route("users/{id}", Name = "GetUser")]
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> GetUser(int id)
         {
@@ -55,7 +55,7 @@ namespace Raffles.API.Controllers
             return Ok(user);
         }
 
-        [Route("api/Users")]
+        [Route("Users")]
         [HttpPost]
         public async Task<IHttpActionResult> Register(UserProfileDto userRegister)
         {
@@ -74,7 +74,7 @@ namespace Raffles.API.Controllers
 
         // PUT: api/Users/5        
         [ResponseType(typeof(void))]
-        [Route("api/users/{id}")]
+        [Route("users/{id}")]
         [HttpPut]
         public async Task<IHttpActionResult> PutUser(int id, UserProfileDto userProfile)
         {            
@@ -86,7 +86,7 @@ namespace Raffles.API.Controllers
         }
 
         [ResponseType(typeof(User))]
-        [Route("api/users/{id}")]
+        [Route("users/{id}")]
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteUser(int id)
         {

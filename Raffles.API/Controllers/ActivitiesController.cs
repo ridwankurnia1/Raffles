@@ -31,7 +31,7 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Activities
-        [Route("api/Activities")]
+        [Route("Activities")]
         [HttpGet]
         public async Task<IEnumerable<ActivityDto>> GetActivities()
         {
@@ -42,7 +42,7 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Activities/5
-        [Route("api/Activities/{id}")]
+        [Route("Activities/{id}")]
         [HttpGet]
         [ResponseType(typeof(Activity))]
         public async Task<IHttpActionResult> GetActivity(int id)
@@ -57,7 +57,7 @@ namespace Raffles.API.Controllers
         }
 
         // PUT: api/Activities/5
-        [Route("api/Activities/{id}")]
+        [Route("Activities/{id}")]
         [HttpPut]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutActivity(int id, ActivityDto activity)
@@ -86,7 +86,7 @@ namespace Raffles.API.Controllers
         }
 
         // POST: api/Activities
-        [Route("api/Activities")]
+        [Route("Activities")]
         [HttpPost]
         public async Task<IHttpActionResult> PostActivity(Activity activity)
         {
@@ -101,7 +101,7 @@ namespace Raffles.API.Controllers
         }
 
         // DELETE: api/Activities/5
-        [Route("api/Activities")]
+        [Route("Activities")]
         [HttpPut]
         public async Task<IHttpActionResult> DeleteActivity(ActivityDto activity)
         {

@@ -16,7 +16,7 @@ export class TransService {
   constructor(private http: HttpClient) { }
 
   saveTransaction(trans: Transactions) {
-    return this.http.post(this.baseUrl + 'api/transactions', trans);
+    return this.http.post(this.baseUrl + 'transactions', trans);
   }
 
   getTransactions(page?, itemsPerPage?, transParams?): Observable<PaginatedResult<Transactions[]>> {
@@ -36,7 +36,7 @@ export class TransService {
       params = params.append('ActivityId', transParams.activityId);
     }
 
-    return this.http.get<Transactions[]>(this.baseUrl + 'api/transactions', { observe: 'response', params})
+    return this.http.get<Transactions[]>(this.baseUrl + 'transactions', { observe: 'response', params})
     .pipe(
       map(response => {
         paginatedResult.result = response.body;
@@ -59,7 +59,7 @@ export class TransService {
       params = params.append('activity', transParams.activity);
     }
 
-    return this.http.get<Transactions[]>(this.baseUrl + 'api/transrpt', { observe: 'response', params})
+    return this.http.get<Transactions[]>(this.baseUrl + 'transrpt', { observe: 'response', params})
     .pipe(
       map(response => {
         return response.body;
@@ -68,22 +68,22 @@ export class TransService {
   }
 
   delTransactions(id) {
-    return this.http.delete(this.baseUrl + 'api/transactions/' + id);
+    return this.http.delete(this.baseUrl + 'transactions/' + id);
   }
 
   saveCategories(category: Categories) {
-    return this.http.post(this.baseUrl + 'api/categories', category);
+    return this.http.post(this.baseUrl + 'categories', category);
   }
 
   getCategories(): Observable<Categories[]> {
-    return this.http.get<Categories[]>(this.baseUrl + 'api/categories');
+    return this.http.get<Categories[]>(this.baseUrl + 'categories');
   }
 
   edtCategories(id: number, category: Categories) {
-    return this.http.put(this.baseUrl + 'api/categories/' + id, category);
+    return this.http.put(this.baseUrl + 'categories/' + id, category);
   }
 
   delCategories(category: Categories) {
-    return this.http.put(this.baseUrl + 'api/categories', category);
+    return this.http.put(this.baseUrl + 'categories', category);
   }
 }

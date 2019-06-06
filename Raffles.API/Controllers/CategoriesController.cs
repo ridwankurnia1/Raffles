@@ -31,7 +31,7 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Categories
-        [Route("api/Categories")]
+        [Route("Categories")]
         [HttpGet]
         public async Task<IEnumerable<CategoryDto>> GetCategories()
         {
@@ -42,7 +42,7 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Categories/5
-        [Route("api/Categories/{id}")]
+        [Route("Categories/{id}")]
         [HttpGet]
         [ResponseType(typeof(CategoryDto))]
         public async Task<IHttpActionResult> GetCategory(int id)
@@ -57,7 +57,7 @@ namespace Raffles.API.Controllers
         }
 
         // PUT: api/Categories/5
-        [Route("api/Categories/{id}")]
+        [Route("Categories/{id}")]
         [HttpPut]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutCategory(int id, CategoryDto category)
@@ -83,7 +83,7 @@ namespace Raffles.API.Controllers
         }
 
         // POST: api/Categories
-        [Route("api/Categories")]
+        [Route("Categories")]
         [HttpPost]
         public async Task<IHttpActionResult> PostCategory(Categories category)
         {
@@ -98,7 +98,7 @@ namespace Raffles.API.Controllers
         }
 
         // DELETE: api/Categories
-        [Route("api/Categories")]
+        [Route("Categories")]
         [HttpPut]
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> DeleteCategory(CategoryDto categories)

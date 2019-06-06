@@ -2,6 +2,7 @@
 using Raffles.API.Controllers;
 using Raffles.API.Data;
 using Raffles.API.Dto;
+using Raffles.API.Filter;
 using Raffles.API.Models;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace Raffles.API
             container.RegisterType<IActivitiesRepository, ActivitiesRepository>();
             container.RegisterType<IMenuRepository, MenuRepository>();
             container.RegisterType<ITransactionRepository, TransactionRepository>();
-
+            
             var MapConfig = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserProfileDto, User>();
@@ -60,9 +61,11 @@ namespace Raffles.API
 
             config.EnableCors();
 
+            // JWT Authentication
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }

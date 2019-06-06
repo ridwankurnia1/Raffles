@@ -31,7 +31,7 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Menus
-        [Route("api/Menus")]
+        [Route("Menus")]
         [HttpGet]
         public async Task<IEnumerable<MenuDto>> GetMenus()
         {
@@ -90,7 +90,7 @@ namespace Raffles.API.Controllers
         //}
 
         // POST: api/Menus
-        [Route("api/Menus")]
+        [Route("Menus")]
         [HttpPost]
         public async Task<IHttpActionResult> PostMenu(IEnumerable<Menu> menu)
         {
@@ -115,7 +115,7 @@ namespace Raffles.API.Controllers
         }
 
         // DELETE: api/Menus/5
-        [Route("api/Menus")]
+        [Route("Menus")]
         [HttpDelete]        
         public async Task<IHttpActionResult> DeleteMenu(Menu menu)
         {

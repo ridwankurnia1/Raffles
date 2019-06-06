@@ -13,18 +13,18 @@ export class ActivityService {
   constructor(private http: HttpClient) { }
 
   saveActivities(activity: Activities) {
-    return this.http.post(this.baseUrl + 'api/activities', activity);
+    return this.http.post(this.baseUrl + 'activities', activity);
   }
 
   getActivities(): Observable<Activities[]> {
-    return this.http.get<Activities[]>(this.baseUrl + 'api/activities');
+    return this.http.get<Activities[]>(this.baseUrl + 'activities');
   }
 
   edtActivities(id: number, activity: Activities) {
-    return this.http.put(this.baseUrl + 'api/activities/' + id, activity);
+    return this.http.put(this.baseUrl + 'activities/' + id, activity);
   }
 
   delActivities(activity: Activities) {
-    return this.http.put(this.baseUrl + 'api/activities', activity);
+    return this.http.put(this.baseUrl + 'activities', activity);
   }
 }

@@ -58,7 +58,8 @@ namespace Raffles.API.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name, userFromRepo.Username)
+                new Claim(ClaimTypes.Name, userFromRepo.Username),
+                new Claim(ClaimTypes.Email, userFromRepo.Email),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8
