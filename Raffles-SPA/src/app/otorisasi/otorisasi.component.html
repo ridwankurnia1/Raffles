@@ -5,9 +5,9 @@
         Menu</button>
     </p>
 
-    <p-table #dt class="table table-responsive table-striped" [value]="listAuth" [paginator]="true" [rows]="10"
+    <p-table #dt class="table table-responsive table-striped" [value]="autMenu" [paginator]="true" [rows]="10"
       [responsive]="true" sortMode="multiple"
-      [globalFilterFields]="['UserName','Program','MenuGroup','MenuName','MenuType']">
+      [globalFilterFields]="['Username','MenuGroup','MenuName']">
       <ng-template pTemplate="caption">
         <div style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -17,7 +17,7 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="UserName">User</th>
+          <th pSortableColumn="Username">User</th>
           <th pSortableColumn="MenuGroup">Program</th>          
           <th style="width:4em"></th>
         </tr>
@@ -42,12 +42,12 @@
         <div class="mt-3">
           <form [formGroup]="authUserForm" (ngSubmit)="AuthByUser()">
             <div class="form-row">              
-              <select class="custom-select d-block w-100" formControlName="UserId" 
+              <select class="custom-select d-block w-100" formControlName="UserId"
                       [ngClass]="{'is-invalid': authUserForm.get('UserId').errors 
                                   && authUserForm.get('UserId').touched}"
                       (change)="onUserSelect($event.target.value)">
-                <option value="">Pilih User ...</option>
-                <option *ngFor="let user of users" [value]="user.Id">{{user.Username}}</option>
+                <option value="" selected disabled>Pilih User ...</option> 
+                <option *ngFor="let user of lstUsers" [value]="user.Id">{{user.Username}}</option>
               </select>
               <div class="invalid-feedback">
                 Harap pilih user id
@@ -88,20 +88,44 @@
           <form [formGroup]="authProgramForm" (ngSubmit)="AuthByProgram()">
             <div class="form-row">
               <select class="custom-select d-block w-100" formControlName="Program" [ngClass]="{'is-invalid': authProgramForm.get('Program').errors 
-                              && authProgramForm.get('Program').touched}">
+                              && authProgramForm.get('Program').touched}"
+                              (change)="onProgramSelect($event.target.value)">
                 <option value="">Pilih Program ...</option>
-                <option value="D">Pemasukan</option>
-                <option value="K">Pengeluaran</option>
+                <option *ngFor="let menu of lstMenu" [value]="menu.ProgramId">{{menu.MenuGroup}} {{menu.MenuName}}</option>
               </select>
               <div class="invalid-feedback">
                 Harap pilih Program
               </div>
             </div>
             <div class="mt-3">
-              <button class="btn btn-success my-2 mr-2" type="submit"><i class="fa fa-check mr-2"></i>Submit</button>
+              <button class="btn btn-success my-2 mr-2" 
+              [ngClass]="{'btn-success': authProgramForm.valid, 'btn-secondary': !authProgramForm.valid}"
+              [disabled]="!authProgramForm.valid" type="submit">
+                <i class="fa fa-check mr-2"></i>Submit</button>
+              <button class="btn btn-primary my-2" type="cancel" (click)="inputToggle(true)">
+                <i class="fa fa-undo mr-2"></i>Batal</button>
             </div>
           </form>
         </div>
+        <p-table #dt2 class="table table-responsive table-striped" [value]="grdUsers" [paginator]="false"
+          [responsive]="true" sortMode="multiple" [(selection)]="selUsers">
+          <ng-template pTemplate="header">
+            <tr>
+              <th style="width: 3em">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>              
+              <th pSortableColumn="Username">User Name</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-user>
+            <tr [pSelectableRow]="user">
+              <td>
+                <p-tableCheckbox [value]="user"></p-tableCheckbox>
+              </td>              
+              <td>{{user.Username}}</td>              
+            </tr>
+          </ng-template>          
+        </p-table>
       </tab>
     </tabset>
   </div>

@@ -18,7 +18,6 @@ export class NavComponent implements OnInit {
   isCollapsed = false;
   allMenus: Menus[];
   menus: Menus[] = [];
-//  menu2: Menus[];
   nMenu: Menus[];
   dMenu: Menus[];
   LoginText: string;
@@ -39,6 +38,7 @@ export class NavComponent implements OnInit {
     this.allMenus = [
       {
         UserId: 0,
+        ProgramId: 1,
         Program: 'transaksi',
         MenuGroup: '',
         MenuName: 'Transaksi',
@@ -46,6 +46,7 @@ export class NavComponent implements OnInit {
       },
       {
         UserId: 0,
+        ProgramId: 2,
         Program: 'laporan',
         MenuGroup: '',
         MenuName: 'Laporan',
@@ -53,6 +54,7 @@ export class NavComponent implements OnInit {
       },
       {
         UserId: 0,
+        ProgramId: 3,
         Program: '',
         MenuGroup: '',
         MenuName: 'Setting',
@@ -60,6 +62,7 @@ export class NavComponent implements OnInit {
       },
       {
         UserId: 0,
+        ProgramId: 4,
         Program: 'users',
         MenuGroup: 'Setting',
         MenuName: 'User',
@@ -67,6 +70,7 @@ export class NavComponent implements OnInit {
       },
       {
         UserId: 0,
+        ProgramId: 5,
         Program: 'otorisasi',
         MenuGroup: 'Setting',
         MenuName: 'Otorisasi',
@@ -74,6 +78,7 @@ export class NavComponent implements OnInit {
       },
       {
         UserId: 0,
+        ProgramId: 6,
         Program: 'kategori',
         MenuGroup: 'Setting',
         MenuName: 'Kategori',
@@ -81,6 +86,7 @@ export class NavComponent implements OnInit {
       },
       {
         UserId: 0,
+        ProgramId: 7,
         Program: 'kegiatan',
         MenuGroup: 'Setting',
         MenuName: 'Kegiatan',

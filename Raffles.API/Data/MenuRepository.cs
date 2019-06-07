@@ -34,9 +34,15 @@ namespace Raffles.API.Data
             return menus;
         }
 
-        public async Task<bool> MenuExists(int userId, string Program)
+        public async Task<Menu> GetMenus(int userId, int programId)
         {
-            if (await _Context.Menus.AsNoTracking().AnyAsync(x => x.UserId == userId && x.Program == Program))
+            var menus = await _Context.Menus.FirstOrDefaultAsync(m => m.UserId == userId && m.ProgramId == programId);
+            return menus;
+        }
+
+        public async Task<bool> MenuExists(int userId, int ProgramId)
+        {
+            if (await _Context.Menus.AsNoTracking().AnyAsync(x => x.UserId == userId && x.ProgramId == ProgramId))
                 return true;
 
             return false;

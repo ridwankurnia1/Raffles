@@ -10,8 +10,9 @@ namespace Raffles.API.Data
     public interface IMenuRepository
     {
         Task Add(Menu menu);
-        Task<IEnumerable<Menu>> GetMenus();        
+        Task<IEnumerable<Menu>> GetMenus();
+        Task<Menu> GetMenus(int userId, int programId);
         Task DeleteMenu(Menu menu);
-        Task<bool> MenuExists(int userId, string Program);
+        Task<bool> MenuExists(int userId, int ProgramId);
     }
 }

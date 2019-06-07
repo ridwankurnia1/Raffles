@@ -9,6 +9,7 @@ namespace Raffles.API.Dto
     public class MenuDto
     {
         public int UserId { get; set; }
+        public int ProgramId { get; set; }
         public string Program { get; set; }
         public string MenuGroup { get; set; }
         public string MenuName { get; set; }

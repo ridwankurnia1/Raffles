@@ -38,8 +38,8 @@ constructor(private http: HttpClient) { }
     return !this.jwtHelper.isTokenExpired(token);
   }
 
-  saveAuth(auth: Menus) {
-    return this.http.post(environment.apiUrl + 'menus', auth);
+  saveAuth(userId: number, auth: Menus[]) {
+    return this.http.post(environment.apiUrl + 'menus/' + userId, auth);
   }
 
   getAuth(): Observable<Menus[]> {
@@ -47,6 +47,6 @@ constructor(private http: HttpClient) { }
   }
 
   delAuth(auth: Menus) {
-    return this.http.put(environment.apiUrl + 'menus', auth);
+    return this.http.delete(environment.apiUrl + 'menus/' + auth.UserId + '/' + auth.ProgramId);
   }
 }

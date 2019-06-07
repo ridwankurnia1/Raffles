@@ -15,6 +15,7 @@ namespace Raffles.API.Models
         public User user { get; set; }
         [Key]
         [Column(Order = 2)]
+        public int ProgramId { get; set; }
         public string Program { get; set; }
         public string MenuGroup { get; set; }        
         public string MenuName { get; set; }

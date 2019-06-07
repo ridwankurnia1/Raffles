@@ -187,6 +187,10 @@
     <Compile Include="Migrations\201905011145281_RevMenu.Designer.cs">
       <DependentUpon>201905011145281_RevMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906062324087_modifymenu.cs" />
+    <Compile Include="Migrations\201906062324087_modifymenu.Designer.cs">
+      <DependentUpon>201906062324087_modifymenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\Menu.cs" />
@@ -226,6 +230,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905011145281_RevMenu.resx">
       <DependentUpon>201905011145281_RevMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906062324087_modifymenu.resx">
+      <DependentUpon>201906062324087_modifymenu.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -120,8 +120,9 @@ isSubmit = 0;
       this.isSubmit = 1;
       this.user = Object.assign({}, this.registerForm.getRawValue());
       this.user.Active = Number(this.user.Active);
-
+      console.log(this.user);
       if (!this.editMode) {
+        this.user.Id = 0;
         this.userService.regUser(this.user).subscribe(() => {
           this.alertify.success('Registrasi user berhasil');
         }, error => {

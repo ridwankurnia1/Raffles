@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CollapseModule, TabsModule, BsDatepickerModule, ModalModule } from 'ngx-bootstrap';
+import { CollapseModule, TabsModule, BsDatepickerModule, ModalModule, CarouselModule } from 'ngx-bootstrap';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
@@ -52,6 +52,7 @@ import { UserService } from './_services/user.service';
       ModalModule.forRoot(),
       TabsModule.forRoot(),
       RouterModule.forRoot(appRoutes),
+      CarouselModule.forRoot(),
       PaginatorModule,
    ],
    providers: [

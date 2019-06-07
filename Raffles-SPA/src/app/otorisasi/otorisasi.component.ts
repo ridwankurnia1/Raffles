@@ -14,13 +14,16 @@ import { UserService } from '../_services/user.service';
 export class OtorisasiComponent implements OnInit {
   authProgramForm: FormGroup;
   authUserForm: FormGroup;
-  listAuth: Menus[];
+  autMenu: Menus[];
+  lstMenu: Menus[];
   sysMenu: Menus[];
   selMenu: Menus[];
   inputMode = false;
   editMode = false;
   isSubmit = 0;
-  users: User[];
+  lstUsers: User[];
+  grdUsers: User[];
+  selUsers: User[];
 
   constructor(
     private alertify: AlertifyService,
@@ -33,6 +36,7 @@ export class OtorisasiComponent implements OnInit {
     this.createAuthUserForm();
     this.loadMenus();
     this.loadUsers();
+    this.lstMenu = this.authService.navMenu;
   }
 
   createAuthProgramForm() {
@@ -49,7 +53,7 @@ export class OtorisasiComponent implements OnInit {
 
   loadMenus() {
     this.authService.getAuth().subscribe((menus: Menus[]) => {
-      this.listAuth = menus;
+      this.autMenu = menus;
     }, error => {
       this.alertify.error(error);
     });
@@ -57,7 +61,7 @@ export class OtorisasiComponent implements OnInit {
 
   loadUsers() {
     this.userService.getUsers().subscribe((user: User[]) => {
-      this.users = user;
+      this.lstUsers = user;
     }, error => {
       this.alertify.error(error);
     });
@@ -67,11 +71,17 @@ export class OtorisasiComponent implements OnInit {
     this.inputMode = !this.inputMode;
     this.editMode = false;
     this.isSubmit = 0;
-    // this.authProgramForm.reset();
-    // this.authUserForm.reset();
+
+    this.authUserForm.reset();
+    this.authUserForm.controls['UserId'].setValue('');
+    this.sysMenu = null;
+
+    this.authProgramForm.reset();
+    this.authProgramForm.controls['Program'].setValue('');
+    this.grdUsers = null;
 
     if (load) {
-      this.loadAuth();
+      this.loadMenus();
     }
   }
 
@@ -79,7 +89,9 @@ export class OtorisasiComponent implements OnInit {
     this.sysMenu = this.authService.navMenu;
   }
 
-  loadAuth() {}
+  onProgramSelect(programId) {
+    this.grdUsers = this.lstUsers;
+  }
 
   deleteAuth(data: Menus) {
     this.alertify.confirm(
@@ -94,7 +106,7 @@ export class OtorisasiComponent implements OnInit {
             this.alertify.error(error);
           },
           () => {
-            this.loadAuth();
+            this.loadMenus();
           }
         );
       },
@@ -102,15 +114,47 @@ export class OtorisasiComponent implements OnInit {
     );
   }
 
-  submitAuth() {
-
-  }
-
   AuthByUser() {
-    console.log(this.selMenu);
+    if (this.selMenu) {
+      const userId = this.authUserForm.controls['UserId'].value;
+      this.authService.saveAuth(userId, this.selMenu).subscribe(
+        () => {
+          this.alertify.success('Otorisasi berhasil ditambahkan');
+        },
+        error => {
+          this.alertify.error(error);
+        },
+        () => {
+          this.inputToggle(true);
+        }
+      );
+    } else {
+      this.alertify.error('Harap pilih menu');
+    }
   }
 
   AuthByProgram() {
+    if (this.selUsers) {
+      const programId = Number(this.authProgramForm.controls['Program'].value);
+      let obj: Menus[];
+      obj = this.lstMenu.filter(m => m.ProgramId === programId);
 
+      this.selUsers.forEach(usr => {
+        this.authService.saveAuth(usr.Id, obj).subscribe(
+          () => {
+            // this.alertify.success('Otorisasi berhasil ditambahkan');
+          },
+          error => {
+            this.alertify.error(error);
+            return;
+          },
+          () => { this.alertify.success('Ototrisasi berhasil ditambahkan'); }
+        );
+      });
+
+      this.inputToggle(true);
+    } else {
+      this.alertify.error('Harap pilih users');
+    }
   }
 }

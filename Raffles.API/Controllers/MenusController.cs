@@ -90,9 +90,9 @@ namespace Raffles.API.Controllers
         //}
 
         // POST: api/Menus
-        [Route("Menus")]
+        [Route("Menus/{userId}")]
         [HttpPost]
-        public async Task<IHttpActionResult> PostMenu(IEnumerable<Menu> menu)
+        public async Task<IHttpActionResult> PostMenu(int userId, IEnumerable<Menu> menu)
         {
             if (menu != null)
             {
@@ -100,9 +100,10 @@ namespace Raffles.API.Controllers
                 {
                     foreach(Menu item in menu)
                     {
-                        bool exists = await _Repo.MenuExists(item.UserId, item.Program);
+                        bool exists = await _Repo.MenuExists(userId, item.ProgramId);
                         if (!exists)
                         {
+                            item.UserId = userId;
                             await _Repo.Add(item);
                         }
                     }
@@ -115,10 +116,11 @@ namespace Raffles.API.Controllers
         }
 
         // DELETE: api/Menus/5
-        [Route("Menus")]
+        [Route("Menus/{userId}/{programId}")]
         [HttpDelete]        
-        public async Task<IHttpActionResult> DeleteMenu(Menu menu)
+        public async Task<IHttpActionResult> DeleteMenu(int userId, int programId)
         {
+            var menu = await _Repo.GetMenus(userId, programId);
             await _Repo.DeleteMenu(menu);
 
             return Ok();
