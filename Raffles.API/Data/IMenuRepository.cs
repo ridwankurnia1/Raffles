@@ -11,6 +11,7 @@ namespace Raffles.API.Data
     {
         Task Add(Menu menu);
         Task<IEnumerable<Menu>> GetMenus();
+        Task<IEnumerable<Menu>> GetMenus(int userId);
         Task<Menu> GetMenus(int userId, int programId);
         Task DeleteMenu(Menu menu);
         Task<bool> MenuExists(int userId, int ProgramId);

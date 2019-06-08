@@ -11,17 +11,36 @@ import { KegiatanComponent } from './kegiatan/kegiatan.component';
 export const appRoutes: Routes = [
     { path: '', component: HomeComponent },
     {
-        path: '',
-        runGuardsAndResolvers: 'always',
-        canActivate: [AuthGuard],
-        children: [
-            { path: 'transaksi', component: TransaksiComponent},
-            { path: 'laporan', component: LaporanComponent },
-            { path: 'users', component: RegistrasiComponent },
-            { path: 'otorisasi', component: OtorisasiComponent },
-            { path: 'kategori', component: KategoriComponent },
-            { path: 'kegiatan', component: KegiatanComponent },
-        ]
+        path: 'transaksi', component: TransaksiComponent, runGuardsAndResolvers: 'always',
+        canActivate: [AuthGuard], data: { programId: 1 },
+    },
+    {
+        path: 'laporan', component: LaporanComponent, runGuardsAndResolvers: 'always',
+        canActivate: [AuthGuard], data: { programId: 2 },
+    },
+    {
+        path: 'users', component: RegistrasiComponent, runGuardsAndResolvers: 'always',
+        canActivate: [AuthGuard], data: { programId: 4 },
+        // children: [
+            // { path: 'transaksi', component: TransaksiComponent, data: { programId: 1 } },
+            // { path: 'laporan', component: LaporanComponent, data: { programId: 2 } },
+            // { path: 'users', component: RegistrasiComponent, data: { programId: 4 } },
+            // { path: 'otorisasi', component: OtorisasiComponent, data: { programId: 5 } },
+            // { path: 'kategori', component: KategoriComponent, data: { programId: 6 } },
+            // { path: 'kegiatan', component: KegiatanComponent, data: { programId: 7 } },
+        // ]
+    },
+    {
+        path: 'otorisasi', component: OtorisasiComponent, runGuardsAndResolvers: 'always',
+        canActivate: [AuthGuard], data: { programId: 5 },
+    },
+    {
+        path: 'kategori', component: KategoriComponent, runGuardsAndResolvers: 'always',
+        canActivate: [AuthGuard], data: { programId: 6 },
+    },
+    {
+        path: 'kegiatan', component: KegiatanComponent, runGuardsAndResolvers: 'always',
+        canActivate: [AuthGuard], data: { programId: 7 },
     },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

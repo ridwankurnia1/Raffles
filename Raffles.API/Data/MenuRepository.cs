@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Raffles.API.Models;
@@ -31,6 +32,12 @@ namespace Raffles.API.Data
         public async Task<IEnumerable<Menu>> GetMenus()
         {
             var menus = await _Context.Menus.Include(u => u.user).ToListAsync();
+            return menus;
+        }
+
+        public async Task<IEnumerable<Menu>> GetMenus(int userId)
+        {
+            var menus = await _Context.Menus.Where(m => m.UserId == userId).OrderBy(m => m.ProgramId).Include(u => u.user).ToListAsync();
             return menus;
         }
 

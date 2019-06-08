@@ -28,7 +28,7 @@ namespace Raffles.API
             container.RegisterType<ITransactionRepository, TransactionRepository>();
             
             var MapConfig = new MapperConfiguration(cfg =>
-            {
+            {                
                 cfg.CreateMap<UserProfileDto, User>();
                 cfg.CreateMap<User, UserProfileDto>();
                 cfg.CreateMap<Activity, ActivityDto>()

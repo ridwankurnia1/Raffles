@@ -3,17 +3,24 @@ using System.Linq;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Raffles.API.Models;
+using System.Collections.Generic;
 
 namespace Raffles.API.Data
 {
     public class AuthRepository : IAuthRepository
     {
-        private DataContext _Context = new DataContext();
+        private DataContext _Context;
 
-        public AuthRepository()
+        public AuthRepository(DataContext context)
         {
-            //_Context = context;
-        }        
+            _Context = context;
+        }
+
+        public async Task<IEnumerable<Menu>> GetMenus(int userId)
+        {
+            var menus = await _Context.Menus.Where(m => m.UserId == userId).OrderBy(m => m.ProgramId).Include(u => u.user).ToListAsync();
+            return menus;
+        }
 
         public async Task<User> Login(string username, string password)
         {
@@ -63,6 +70,14 @@ namespace Raffles.API.Data
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
+        }
+
+        public async Task<bool> isAuthorize(int userId, int programId)
+        {
+            if (await _Context.Menus.AnyAsync(m => m.UserId == userId && m.ProgramId == programId))
+                return true;
+
+            return false;
         }
     }
 }

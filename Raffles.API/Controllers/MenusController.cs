@@ -42,17 +42,15 @@ namespace Raffles.API.Controllers
         }
 
         // GET: api/Menus/5
-        //[ResponseType(typeof(Menu))]
-        //public async Task<IHttpActionResult> GetMenu(int id)
-        //{
-        //    Menu menu = await db.Menus.FindAsync(id);
-        //    if (menu == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [Route("Menus/{userId}")]
+        [HttpGet]
+        public async Task<IEnumerable<MenuDto>> GetMenu(int userId)
+        {
+            var menus = await _Repo.GetMenus(userId);
+            IEnumerable<MenuDto> dto = _Mapper.Map<IEnumerable<MenuDto>>(menus);
 
-        //    return Ok(menu);
-        //}
+            return dto;
+        }
 
         // PUT: api/Menus/5
         //[ResponseType(typeof(void))]

@@ -44,7 +44,7 @@ export class TransaksiComponent implements OnInit {
       dateTo: '',
       trType: '',
       activity: 1
-    }
+    };
 
     this.loadTrans();
     this.loadCategories();

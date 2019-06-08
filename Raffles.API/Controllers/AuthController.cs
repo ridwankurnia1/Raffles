@@ -2,8 +2,8 @@
 using Microsoft.IdentityModel.Tokens;
 using Raffles.API.Data;
 using Raffles.API.Dto;
-using Raffles.API.Models;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -78,13 +78,21 @@ namespace Raffles.API.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            //var user = _Mapper.Map<UserForListDto>(userFromRepo);
+            var listMenu = await _Repo.GetMenus(userFromRepo.Id);
+            var userMenu = _Mapper.Map<IEnumerable<MenuDto>>(listMenu);
 
             return Ok(new
             {
                 token = tokenHandler.WriteToken(token)
-                //,user
+              , userMenu
             });
+        }
+
+        [Route("auth/{userId}/{programId}")]
+        [HttpGet]
+        public async Task<bool> isAuthorize(int userId, int programId)
+        {
+            return await _Repo.isAuthorize(userId, programId);
         }
     }
 }
